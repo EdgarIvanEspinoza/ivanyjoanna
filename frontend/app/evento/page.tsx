@@ -1,4 +1,4 @@
-import { subtitle } from '@/components/primitives';
+import { subtitle } from '@/components/common/primitives';
 import { Divider } from '@nextui-org/divider';
 
 export default function EventPage() {

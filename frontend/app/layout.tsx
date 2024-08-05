@@ -3,7 +3,7 @@ import { Metadata, Viewport } from 'next';
 import { siteConfig } from '@/config/site';
 import { fontSans } from '@/config/fonts';
 import { Providers } from './providers';
-import { Navbar } from '@/components/navbar';
+import { Navbar } from '@/components/common/navbar';
 import { Link } from '@nextui-org/link';
 import clsx from 'clsx';
 
@@ -40,7 +40,7 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: 'class', defaultTheme: 'white' }}>
-          <div className="relative flex flex-col h-screen">
+          <div className="relative flex flex-col h-screen w-screen">
             <Navbar />
             <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
               {children}

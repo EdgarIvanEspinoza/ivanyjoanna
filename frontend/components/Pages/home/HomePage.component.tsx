@@ -1,8 +1,7 @@
-'use client';
-import { title, subtitle } from '@/components/primitives';
+import { title, subtitle } from '@/components/common/primitives';
 import { useState } from 'react';
 
-export default function Home() {
+const HomePageComponent = () => {
   const [days, setDays] = useState<number>(0);
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
@@ -54,4 +53,6 @@ export default function Home() {
       </div>
     </section>
   );
-}
+};
+
+export default HomePageComponent;
