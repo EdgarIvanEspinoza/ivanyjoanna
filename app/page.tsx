@@ -8,7 +8,7 @@ export default function Home() {
   const [minutes, setMinutes] = useState<number>(0);
   const [seconds, setSeconds] = useState<number>(0);
 
-  const countDownDate = new Date('Sep 22, 2025 00:00:00').getTime();
+  const countDownDate = new Date('Oct 10, 2025 00:00:00').getTime();
   const timer = (): any => {
     setInterval(() => {
       const now = new Date().getTime();
@@ -32,7 +32,7 @@ export default function Home() {
         <h2 className={subtitle({ class: 'mt-4' })}>
           Guarda la fecha y acompáñanos en nuestra celebración.
         </h2>
-        <h3 className={subtitle({ class: 'mt-4' })}>22 - 09 - 2025</h3>
+        <h3 className={subtitle({ class: 'mt-4' })}>10 - 10 - 2025</h3>
       </div>
       <div className="flex flex-row justify-center text-center gap-4 mt-8">
         <div className="flex flex-col items-center gap-2">
