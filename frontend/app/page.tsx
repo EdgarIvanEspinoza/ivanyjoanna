@@ -1,9 +1,29 @@
-'use client';
+import React from 'react';
+import Head from 'next/head';
+import Header from '../components/Header';
+import OurStory from '../components/OurStory';
+import WeddingDetails from '../components/WeddingDetails';
+import RSVP from '../components/RSVP';
+import Gallery from '../components/Gallery';
+import '../styles/globals.css';
 
-import HomePageComponent from '@/components/Pages/home/HomePage.component';
-
-const Home = () => {
-  return <HomePageComponent />;
-};
+const Home = () => (
+  <div>
+    <Head>
+      <title>Mystical Wedding</title>
+      <meta
+        name="description"
+        content="A mystical and enchanting wedding experience"
+      />
+    </Head>
+    <Header />
+    <main>
+      <OurStory />
+      <WeddingDetails />
+      <RSVP />
+      <Gallery />
+    </main>
+  </div>
+);
 
 export default Home;
