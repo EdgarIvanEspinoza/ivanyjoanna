@@ -1,29 +1,10 @@
-import React from 'react';
-import Head from 'next/head';
-import Header from '../components/Header';
-import OurStory from '../components/OurStory';
-import WeddingDetails from '../components/WeddingDetails';
-import RSVP from '../components/RSVP';
-import Gallery from '../components/Gallery';
-import '../styles/globals.css';
+import styles from './page.module.css';
 
-const Home = () => (
-  <div>
-    <Head>
-      <title>Mystical Wedding</title>
-      <meta
-        name="description"
-        content="A mystical and enchanting wedding experience"
-      />
-    </Head>
-    <Header />
-    <main>
-      <OurStory />
-      <WeddingDetails />
-      <RSVP />
-      <Gallery />
+export default function Home() {
+  return (
+    <main className={styles.main}>
+      {'This is the future Wedding site'}
+      {'10-10-2025'}
     </main>
-  </div>
-);
-
-export default Home;
+  );
+}
