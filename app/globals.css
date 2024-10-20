@@ -1,0 +1,47 @@
+:root {
+  --font-mono: 'montaga';
+  font-size: 10px;
+  color: #e5dcbf;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: #515d38;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hover-animation {
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  border-radius: 0.4rem;
+}
+
+.hover-animation:hover {
+  border-radius: 0.4rem;
+  background-color: #e5dcbf;
+  color: #515d38;
+}
+
+.rsvp-hover-animation {
+  transition: text-decoration 0.3s ease-in-out, border-radius 0.3s ease-in-out,
+    color 0.3s ease-in-out;
+  border-radius: 0.4rem;
+}
+
+.rsvp-hover-animation:hover {
+  text-decoration: underline;
+  border-radius: 0.4rem;
+  color: #515d38;
+}
