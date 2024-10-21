@@ -16,4 +16,9 @@ export const StyledOurHistoryTitle = styled.h1`
   font-weight: 400;
   text-align: center;
   margin-bottom: 2.4rem;
+
+  @media (max-width: 768px) {
+    font-size: 3.6rem;
+    line-height: 3.6rem;
+  }
 `;

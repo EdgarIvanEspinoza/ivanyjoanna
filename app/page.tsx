@@ -7,9 +7,11 @@ import { OurHistoryComponent } from '@/components/OurHistory/OurHistoryComponent
 export default function Home() {
   return (
     <main>
-      <HeroComponent />
-      <MenuComponent />
-      <OurHistoryComponent />
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <HeroComponent />
+        <MenuComponent />
+        <OurHistoryComponent />
+      </div>
     </main>
   );
 }

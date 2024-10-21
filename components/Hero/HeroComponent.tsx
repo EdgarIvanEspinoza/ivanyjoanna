@@ -2,18 +2,16 @@ import { HeroDoorComponent } from './Door/HeroDoorComponent';
 import { DecoratorLeftComponent } from './DecoratorLeft/DecoratorLeftComponent';
 import { DecoratorRightComponent } from './DecoratorRight/DecoratorRightComponent';
 import { StyledHeroWrapper } from './Styles';
-import { HideOnTabletAndSmallScreens } from '../../Utils/MediaQuery';
+import { useScreenSize } from '@/Contexts/ScreenContext';
 
 export const HeroComponent = () => {
+  const { isLargeScreen } = useScreenSize();
+
   return (
     <StyledHeroWrapper>
-      <HideOnTabletAndSmallScreens>
-        <DecoratorLeftComponent />
-      </HideOnTabletAndSmallScreens>
+      {isLargeScreen && <DecoratorLeftComponent />}
       <HeroDoorComponent />
-      <HideOnTabletAndSmallScreens>
-        <DecoratorRightComponent />
-      </HideOnTabletAndSmallScreens>
+      {isLargeScreen && <DecoratorRightComponent />}
     </StyledHeroWrapper>
   );
 };
