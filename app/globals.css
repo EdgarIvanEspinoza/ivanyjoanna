@@ -1,8 +1,28 @@
+@font-face {
+  font-family: 'Montaga';
+  src: url('/assets/fonts/Montaga-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/assets/fonts/Montserrat-Light.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/assets/fonts/Montserrat-Medium.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
 :root {
-  --font-mono: 'montaga';
+  --font-mono: 'Montaga', monospace;
   font-size: 10px;
   color: #e5dcbf;
-  font-weight: 400;
 }
 
 * {
@@ -16,6 +36,8 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   background-color: #515d38;
+  padding-right: 0 !important;
+  color: var(--font-color);
 }
 
 a {
@@ -29,7 +51,6 @@ a {
 }
 
 .hover-animation:hover {
-  border-radius: 0.4rem;
   background-color: #e5dcbf;
   color: #515d38;
 }
@@ -42,6 +63,43 @@ a {
 
 .rsvp-hover-animation:hover {
   text-decoration: underline;
-  border-radius: 0.4rem;
   color: #515d38;
+}
+
+h1,
+h2 {
+  font-family: 'Montaga', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+p {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+p.bold {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #e5dcbf;
+  opacity: 1;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #e5dcbf;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #e5dcbf;
+}
+
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
+  color: #e5dcbf;
 }

@@ -10,7 +10,7 @@ export const DecoratorLeftComponent = () => {
   return (
     <>
       <StyledLeftCornerImage
-        src="/assets/img-corner-left.png"
+        src="/assets/images/img-corner-left.png"
         alt="Image"
         width={128}
         height={128}

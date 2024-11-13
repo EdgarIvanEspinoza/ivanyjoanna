@@ -12,14 +12,14 @@ export const HeroDoorComponent = () => {
     <>
       {isLargeScreen ? (
         <StyledDoorImage
-          src="/assets/img-door.png"
+          src="/assets/images/img-door.png"
           alt="Image"
           width={629}
           height={740}
         />
       ) : (
         <StyledDoorImageMobile
-          src="/assets/img-door.png"
+          src="/assets/images/img-door.png"
           alt="Image"
           width={347}
           height={408}

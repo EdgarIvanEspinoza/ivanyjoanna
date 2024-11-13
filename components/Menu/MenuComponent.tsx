@@ -13,7 +13,7 @@ export const MenuComponent = () => {
               <a href="#nosotros">Nosotros</a>
             </StyledLi>
             <StyledLi className="hover-animation">
-              <a href="#lugar-y-logistica">Lugar y logística</a>
+              <a href="#lugar-y-transporte">Lugar y Transporte</a>
             </StyledLi>
             <StyledLiRSVP className="rsvp-hover-animation">
               <a href="#rsvp">RSVP</a>
