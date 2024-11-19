@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import styled from 'styled-components';
 
 export const StyledOurHistoryWrapper = styled.div`
@@ -17,8 +18,25 @@ export const StyledOurHistoryTitle = styled.h1`
   text-align: center;
   margin-bottom: 2.4rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: 980px) {
     font-size: 3.6rem;
     line-height: 3.6rem;
   }
+`;
+
+export const StyledMountainsBackground = styled(Image)`
+  max-width: 110rem;
+  object-fit: cover;
+`;
+
+export const StyledRoadBackground = styled(Image)`
+  position: absolute;
+  max-width: 110rem;
+  object-fit: cover;
+  margin-top: 2.65rem;
+`;
+
+export const StyledForever = styled.p`
+  font-family: Montaga;
+  font-size: 3.2rem;
 `;

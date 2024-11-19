@@ -23,14 +23,14 @@ export const ScreenSizeProvider = ({
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const initialScreenSize = window.matchMedia('(min-width: 768px)').matches;
+      const initialScreenSize = window.matchMedia('(min-width: 980px)').matches;
       setIsLargeScreen(initialScreenSize);
 
       const handleResize = (e: { matches: boolean }) => {
         setIsLargeScreen(e.matches);
       };
 
-      const mediaQuery = window.matchMedia('(min-width: 768px)');
+      const mediaQuery = window.matchMedia('(min-width: 980px)');
       mediaQuery.addEventListener('change', handleResize);
 
       return () => {

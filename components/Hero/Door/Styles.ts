@@ -2,14 +2,16 @@ import styled from 'styled-components';
 import Image from 'next/image';
 
 export const StyledDoorImage = styled(Image)`
-  alignself: flex-end;
+  align-self: flex-end;
   max-width: 100vw;
   margin: 8.8rem auto 0 auto;
   object-fit: cover;
+  z-index: 1;
 `;
 
 export const StyledDoorImageMobile = styled(Image)`
-  alignself: flex-end;
+  z-index: 1;
+  align-self: flex-end;
   max-width: 100vw;
   margin: 5rem auto 0 auto;
   object-fit: cover;
@@ -17,7 +19,7 @@ export const StyledDoorImageMobile = styled(Image)`
 
 export const StyledLabelDoorTitle = styled.label`
   position: absolute;
-  top: 27rem;
+  top: 24rem;
   left: 50%;
   font-size: 5.6rem;
   line-height: 5.6rem;
@@ -27,17 +29,17 @@ export const StyledLabelDoorTitle = styled.label`
   max-width: 17.1rem;
   max-height: 11.8rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: 980px) {
     font-size: 3.2rem;
     line-height: 3.2rem;
     max-width: 9.8rem;
-    top: 15.3rem;
+    top: 14.5rem;
   }
 `;
 
 export const StyledLabelDoorSubtitle = styled.label`
   position: absolute;
-  top: 33rem;
+  top: 30.5rem;
   left: 50%;
   transform: translateX(-50%);
   font-size: 1.6rem;
@@ -45,9 +47,9 @@ export const StyledLabelDoorSubtitle = styled.label`
   text-align: center;
   font-weight: 400;
 
-  @media (max-width: 768px) {
+  @media (max-width: 980px) {
     font-size: 1.5rem;
     line-height: 1.5rem;
-    top: 47rem;
+    top: 18rem;
   }
 `;

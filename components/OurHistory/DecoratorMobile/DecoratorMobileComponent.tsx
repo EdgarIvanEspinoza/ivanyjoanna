@@ -1,6 +1,6 @@
 import { StyledDecoratorMobileImage } from './Styles';
 
-export const DecoratorMobbileComponent = () => {
+export const DecoratorMobileComponent = () => {
   return (
     <StyledDecoratorMobileImage
       src="/assets/images/img-corner-left.png"

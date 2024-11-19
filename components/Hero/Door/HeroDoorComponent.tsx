@@ -14,8 +14,8 @@ export const HeroDoorComponent = () => {
         <StyledDoorImage
           src="/assets/images/img-door.png"
           alt="Image"
-          width={629}
-          height={740}
+          width={563}
+          height={662}
         />
       ) : (
         <StyledDoorImageMobile

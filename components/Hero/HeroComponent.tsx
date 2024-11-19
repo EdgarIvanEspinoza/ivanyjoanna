@@ -1,8 +1,9 @@
+import { useScreenSize } from '@/Contexts/ScreenContext';
 import { HeroDoorComponent } from './Door/HeroDoorComponent';
 import { DecoratorLeftComponent } from './DecoratorLeft/DecoratorLeftComponent';
 import { DecoratorRightComponent } from './DecoratorRight/DecoratorRightComponent';
-import { StyledHeroWrapper } from './Styles';
-import { useScreenSize } from '@/Contexts/ScreenContext';
+import { HeroImageComponent } from './HeroImage/HeroImage';
+import { StyledHeroWrapper, StyledHeroImageWrapper } from './Styles';
 
 export const HeroComponent = () => {
   const { isLargeScreen } = useScreenSize();
@@ -10,6 +11,9 @@ export const HeroComponent = () => {
   return (
     <StyledHeroWrapper>
       {isLargeScreen && <DecoratorLeftComponent />}
+      <StyledHeroImageWrapper>
+        <HeroImageComponent />
+      </StyledHeroImageWrapper>
       <HeroDoorComponent />
       {isLargeScreen && <DecoratorRightComponent />}
     </StyledHeroWrapper>

@@ -17,7 +17,7 @@ export const StyledPlaceTransportTitle = styled.h1`
   text-align: center;
   margin: 7.2rem 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: 980px) {
     font-size: 3.6rem;
     line-height: 3.6rem;
   }
