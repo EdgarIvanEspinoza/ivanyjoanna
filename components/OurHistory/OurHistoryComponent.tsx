@@ -6,6 +6,7 @@ import {
   StyledOurHistoryWrapper,
   StyledMountainsBackground,
   StyledRoadBackground,
+  StyledRoadBackgroundMobile,
 } from './Styles';
 import { PathStepComponent } from './PathStep/PathStepComponent';
 
@@ -15,17 +16,68 @@ export const OurHistoryComponent = () => {
     <StyledOurHistoryWrapper>
       {!isLargeScreen && <DecoratorMobileComponent />}
       <StyledOurHistoryTitle>Nuestra Historia</StyledOurHistoryTitle>
-      <StyledMountainsBackground
-        src="/assets/images/mountains-bg.png"
-        alt="mountains-bg"
-        width="1059"
-        height="1262"
+      {isLargeScreen ? (
+        <>
+          <StyledMountainsBackground
+            src="/assets/images/mountains-bg.png"
+            alt="mountains-bg"
+            width="1059"
+            height="1262"
+          />
+          <StyledRoadBackground
+            src="/assets/images/history-road.png"
+            alt="history-road"
+            width="637"
+            height="1171"
+          />
+        </>
+      ) : (
+        <StyledRoadBackgroundMobile
+          src="/assets/images/history-road-mobile.png"
+          alt="history-road"
+          width="288"
+          height="1965"
+        />
+      )}
+      <PathStepComponent
+        top="25rem"
+        left="12%"
+        reverse={true}
+        title="Nosotros"
+        description="Two liner of a story I don’t know how long is going to be"
+        imageUrl="/assets/images/path-placeholder.png"
       />
-      <StyledRoadBackground
-        src="/assets/images/history-road.png"
-        alt="history-road"
-        width="637"
-        height="1171"
+      <PathStepComponent
+        top="45rem"
+        left="55%"
+        reverse={false}
+        title="Nosotros"
+        description="Two liner of a story I don’t know how long is going to be"
+        imageUrl="/assets/images/path-placeholder.png"
+      />
+      <PathStepComponent
+        top="65rem"
+        left="12%"
+        reverse={true}
+        title="Nosotros"
+        description="Two liner of a story I don’t know how long is going to be"
+        imageUrl="/assets/images/path-placeholder.png"
+      />
+      <PathStepComponent
+        top="85rem"
+        left="55%"
+        reverse={false}
+        title="Nosotros"
+        description="Two liner of a story I don’t know how long is going to be"
+        imageUrl="/assets/images/path-placeholder.png"
+      />
+      <PathStepComponent
+        top="105rem"
+        left="12%"
+        reverse={true}
+        title="Nosotros"
+        description="Two liner of a story I don’t know how long is going to be"
+        imageUrl="/assets/images/path-placeholder.png"
       />
       <StyledForever>Forever</StyledForever>
     </StyledOurHistoryWrapper>

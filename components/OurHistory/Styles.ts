@@ -7,8 +7,10 @@ export const StyledOurHistoryWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  max-width: 150rem;
   height: 100%;
-  margin-top: 5rem;
+  position: relative;
+  margin: 5rem auto 0;
 `;
 
 export const StyledOurHistoryTitle = styled.h1`
@@ -39,4 +41,10 @@ export const StyledRoadBackground = styled(Image)`
 export const StyledForever = styled.p`
   font-family: Montaga;
   font-size: 3.2rem;
+`;
+
+export const StyledRoadBackgroundMobile = styled(Image)`
+  max-width: 110rem;
+  object-fit: cover;
+  margin-top: 2.65rem;
 `;

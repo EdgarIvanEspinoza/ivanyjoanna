@@ -26,14 +26,20 @@ export const StyledPlaceTransportTitle = styled.h1`
 export const StyledPlaceTransportDetailBoxWrapper = styled.div`
   display: flex;
   gap: 6.4rem;
+
+  @media (max-width: 980px) {
+    flex-direction: column;
+    gap: 3.2rem;
+  }
 `;
 
 export const StyledPlaceTransportDetailBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 50.8rem;
-  height: 33.3rem;
+  width: 100%;
+  max-width: 50.8rem;
+  min-height: 33.3rem;
   border: 1px solid #e5dcbf;
   padding: 2.8rem;
   gap: 2.7rem;

@@ -5,7 +5,7 @@ import { MenuComponent } from '@/components/Menu/MenuComponent';
 import { OurHistoryComponent } from '@/components/OurHistory/OurHistoryComponent';
 import { PlaceTransportComponent } from '@/components/PlaceTransport/PlaceTransportComponent';
 import { FooterComponent } from '@/components/Footer/FooterComponent';
-import { FellowshipSeparatorComponent } from '@/components/Separator/FellowshipSeparatorComponent';
+import { FellowshipSeparatorComponent } from '@/components/FellowshipSeparator/FellowshipSeparatorComponent';
 
 export default function Home() {
   return (

@@ -12,6 +12,8 @@ type Props = {
   description?: string;
   imageUrl?: string;
   reverse?: boolean;
+  top: string;
+  left: string;
 };
 
 export const PathStepComponent = ({
@@ -19,9 +21,11 @@ export const PathStepComponent = ({
   description = 'Two liner of a story I don’t know how long is going to be ',
   imageUrl = '/assets/images/path-placeholder.png',
   reverse = false,
+  top,
+  left,
 }: Props): React.ReactElement => {
   return (
-    <StyledPathStepWrapper reverse={reverse}>
+    <StyledPathStepWrapper reverse={reverse} top={top} left={left}>
       <StyledPathStepImage
         src={imageUrl}
         alt="Image"

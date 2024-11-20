@@ -1,37 +1,31 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 
-export const StyledPathStepWrapper = styled.div<{ reverse: boolean }>`
+export const StyledPathStepWrapper = styled.div<{
+  reverse: boolean;
+  top: string;
+  left: string;
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 50rem;
+  max-height: 21.2rem;
   height: 100%;
-  ${(props) => props.reverse && 'flex-direction: reverse-row;'};
-`;
+  position: absolute;
+  top: 25rem;
+  left: 12%;
+  ${(props) => props.top && `top: ${props.top};`};
+  ${(props) => props.left && `left: ${props.left};`};
+  ${(props) => props.reverse && 'flex-direction: row-reverse;'};
 
-export const StyledPathStepTitle = styled.h1`
-  font-size: 3.6rem;
-  line-height: 3.6rem;
-  font-weight: 400;
-  text-align: center;
-  margin: 2.4rem 0 1.6rem 0;
-`;
-
-export const StyledPathStepDescription = styled.p`
-  font-size: 1.8rem;
-  line-height: 2.4rem;
-  font-weight: 400;
-  text-align: center;
-`;
-
-export const StyledPathStepImage = styled(Image)`
-  border-radius: 100%;
-  object-fit: cover;
-`;
-
-export const StyledPathStepConnectorImage = styled(Image)`
-  object-fit: cover;
+  @media (max-width: 980px) {
+    flex-direction: column;
+    left: 50%;
+    right: 50%;
+    ${(props) => props.top && `top: calc(${props.top} * 1.85);`};
+    transform: translate(-50%, -50%);
+  }
 `;
 
 export const StyledPathStepLeyendWrapper = styled.div`
@@ -39,6 +33,35 @@ export const StyledPathStepLeyendWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 26.4rem;
+  height: auto;
+  border: 0.1rem solid #e5dcbf;
+  padding: 1.2rem;
+  background: #515d38;
+`;
+
+export const StyledPathStepTitle = styled.h1`
+  font-size: 3.2rem;
+  font-weight: 400;
+  text-align: justify;
   width: 100%;
+  margin-bottom: 0.8rem;
+`;
+
+export const StyledPathStepDescription = styled.p`
+  font-size: 1.6rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+  text-align: justify;
   height: 100%;
+`;
+
+export const StyledPathStepImage = styled(Image)`
+  border-radius: 100%;
+  object-fit: cover;
+  border: 0.2rem dashed #e5dcbf;
+`;
+
+export const StyledPathStepConnectorImage = styled(Image)`
+  object-fit: cover;
 `;
