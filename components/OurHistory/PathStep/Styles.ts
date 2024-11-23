@@ -4,7 +4,8 @@ import Image from 'next/image';
 export const StyledPathStepWrapper = styled.div<{
   reverse: boolean;
   top: string;
-  left: string;
+  left?: string;
+  right?: string;
 }>`
   display: flex;
   align-items: center;
@@ -14,9 +15,9 @@ export const StyledPathStepWrapper = styled.div<{
   height: 100%;
   position: absolute;
   top: 25rem;
-  left: 12%;
   ${(props) => props.top && `top: ${props.top};`};
   ${(props) => props.left && `left: ${props.left};`};
+  ${(props) => props.right && `right: ${props.right};`};
   ${(props) => props.reverse && 'flex-direction: row-reverse;'};
 
   @media (max-width: 980px) {
@@ -41,9 +42,8 @@ export const StyledPathStepLeyendWrapper = styled.div`
 `;
 
 export const StyledPathStepTitle = styled.h1`
-  font-size: 3.2rem;
+  font-size: 2.8rem;
   font-weight: 400;
-  text-align: justify;
   width: 100%;
   margin-bottom: 0.8rem;
 `;
@@ -52,7 +52,6 @@ export const StyledPathStepDescription = styled.p`
   font-size: 1.6rem;
   line-height: 1.5rem;
   font-weight: 400;
-  text-align: justify;
   height: 100%;
 `;
 
