@@ -18,8 +18,8 @@ export const PlaceTransportComponent = () => {
       <StyledPlaceTransportDetailBoxWrapper>
         <StyledPlaceTransportDetailBox>
           <Image
-            src="/assets/images/img-hobbit-door.png"
-            alt="img-hobbit-door"
+            src="/assets/images/hobbit-door.svg"
+            alt="hobbit-door"
             width={81}
             height={61}
           />
@@ -36,7 +36,7 @@ export const PlaceTransportComponent = () => {
         </StyledPlaceTransportDetailBox>
         <StyledPlaceTransportDetailBox>
           <Image
-            src="/assets/images/img-elf-boat.png"
+            src="/assets/images/elf-boat.svg"
             alt="img-elf-boat"
             width={81}
             height={61}

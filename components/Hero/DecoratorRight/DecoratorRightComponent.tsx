@@ -10,31 +10,31 @@ export const DecoratorRightComponent = () => {
   return (
     <>
       <StyledRightCornerImage
-        src="/assets/images/img-corner-left.png"
+        src="/assets/images/corner-left.svg"
         alt="Image"
         width={128}
         height={128}
       />
       <StyledWhiteStarOne
-        src="/background/star-white.png"
+        src="/assets/images/star-white.svg"
         alt="Image"
         width={22}
         height={22}
       />
       <StyledWhiteStarTwo
-        src="/background/star-white.png"
+        src="/assets/images/star-white.svg"
         alt="Image"
         width={22}
         height={22}
       />
       <StyledBlackStarOne
-        src="/background/star-black.png"
+        src="/assets/images/star-black.svg"
         alt="Image"
         width={22}
         height={22}
       />
       <StyledBlackStarTwo
-        src="/background/star-black.png"
+        src="/assets/images/star-black.svg"
         alt="Image"
         width={22}
         height={22}

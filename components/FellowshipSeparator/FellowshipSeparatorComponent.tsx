@@ -4,7 +4,7 @@ export const FellowshipSeparatorComponent = () => {
   return (
     <StyledFellowshipWrapper>
       <StyledFellowshipImage
-        src="/assets/images/img-fellowship.png"
+        src="/assets/images/fellowship.svg"
         alt="Image"
         layout="responsive"
         width={538}

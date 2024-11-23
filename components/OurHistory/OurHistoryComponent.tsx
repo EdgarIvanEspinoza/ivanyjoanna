@@ -19,13 +19,13 @@ export const OurHistoryComponent = () => {
       {isLargeScreen ? (
         <>
           <StyledMountainsBackground
-            src="/assets/images/mountains-bg.png"
+            src="/assets/images/mountains-bg.svg"
             alt="mountains-bg"
             width="1059"
             height="1262"
           />
           <StyledRoadBackground
-            src="/assets/images/history-road.png"
+            src="/assets/images/history-road.svg"
             alt="history-road"
             width="637"
             height="1171"
@@ -33,7 +33,7 @@ export const OurHistoryComponent = () => {
         </>
       ) : (
         <StyledRoadBackgroundMobile
-          src="/assets/images/history-road-mobile.png"
+          src="/assets/images/history-road-mobile.svg"
           alt="history-road"
           width="288"
           height="1965"

@@ -33,7 +33,7 @@ export const PathStepComponent = ({
         height={212}
       />
       <StyledPathStepConnectorImage
-        src={'/assets/images/connector.png'}
+        src={'/assets/images/connector.svg'}
         alt="Image"
         width={24}
         height={1}
