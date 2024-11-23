@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   StyledPlaceTransportDetailBox,
   StyledPlaceTransportDetailBoxWrapper,
@@ -12,6 +13,33 @@ import {
 import Image from 'next/image';
 
 export const PlaceTransportComponent = () => {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setMessage('');
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (res.ok) {
+        setMessage('¡Gracias por suscribirte!');
+        setEmail('');
+      } else {
+        const errorData = await res.json();
+        setMessage(errorData.error || 'Hubo un problema, intenta más tarde.');
+      }
+    } catch (err) {
+      setMessage('Hubo un error, por favor intenta más tarde.');
+    }
+  };
+
   return (
     <StyledPlaceTransportWrapper>
       <StyledPlaceTransportTitle>Lugar y Transporte</StyledPlaceTransportTitle>
@@ -45,18 +73,25 @@ export const PlaceTransportComponent = () => {
             Transporte y hospedaje
           </StyledPlaceTransportDetailTitle>
           <StyledPlaceTransportDetailText>
-            Estamos aun ajustando algunos detalles, dejanos tu email para
-            enviarte una actualización apenas tengamos la información.
+            Estamos aun ajustando algunos detalles, déjanos tu email para
+            enviarte una actualización apenas tengamos la información.
           </StyledPlaceTransportDetailText>
           <StyledPlaceTransportDetailFormWrapper>
             <StyledPlaceTransportDetailInput
               type="email"
               placeholder="Escribe tu email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
-            <StyledPlaceTransportDetailButton>
+            <StyledPlaceTransportDetailButton
+              type="submit"
+              onClick={handleSubmit}
+            >
               Enviar
             </StyledPlaceTransportDetailButton>
           </StyledPlaceTransportDetailFormWrapper>
+          {message && <p>{message}</p>}
         </StyledPlaceTransportDetailBox>
       </StyledPlaceTransportDetailBoxWrapper>
     </StyledPlaceTransportWrapper>
