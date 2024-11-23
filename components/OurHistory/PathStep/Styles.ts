@@ -24,8 +24,9 @@ export const StyledPathStepWrapper = styled.div<{
     flex-direction: column;
     left: 50%;
     right: 50%;
-    ${(props) => props.top && `top: calc(${props.top} * 1.85);`};
     transform: translate(-50%, -50%);
+
+    ${(props) => props.top && `top: calc(${props.top} * 2.2);`};
   }
 `;
 

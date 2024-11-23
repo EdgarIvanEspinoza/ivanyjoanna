@@ -13,6 +13,17 @@ export const StyledOurHistoryWrapper = styled.div`
   margin: 5rem auto 0;
 `;
 
+export const StyledPathStepComponentWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  @media (max-width: 980px) {
+    flex-direction: column;
+  }
+`;
+
 export const StyledOurHistoryTitle = styled.h1`
   font-size: 5.6rem;
   line-height: 5.6rem;
@@ -44,7 +55,8 @@ export const StyledForever = styled.p`
 `;
 
 export const StyledRoadBackgroundMobile = styled(Image)`
-  max-width: 110rem;
+  max-width: 130rem;
   object-fit: cover;
   margin-top: 2.65rem;
+  margin-bottom: 22.65rem;
 `;

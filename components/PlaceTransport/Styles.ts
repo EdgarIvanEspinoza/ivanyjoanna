@@ -42,7 +42,11 @@ export const StyledPlaceTransportDetailBox = styled.div`
   min-height: 33.3rem;
   border: 1px solid #e5dcbf;
   padding: 2.8rem;
-  gap: 2.7rem;www
+  gap: 2.7rem;
+
+  @media (max-width: 980px) {
+    min-height: 100%;
+  }
 `;
 
 export const StyledPlaceTransportDetailTitle = styled.h2`

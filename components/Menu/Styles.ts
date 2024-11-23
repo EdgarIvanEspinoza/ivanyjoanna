@@ -10,6 +10,10 @@ export const StyledUlMenu = styled.ul`
   font-size: 2rem;
   line-height: 2rem;
   width: 100%;
+
+  @media (max-width: 980px) {
+    gap: 0.8rem;
+  }
 `;
 
 export const StyledLi = styled.li`
