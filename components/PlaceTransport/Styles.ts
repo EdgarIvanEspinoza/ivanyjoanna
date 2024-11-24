@@ -70,7 +70,9 @@ export const StyledPlaceTransportDetailFormWrapper = styled.div`
   height: 4.7rem;
 `;
 
-export const StyledPlaceTransportDetailInput = styled.input`
+export const StyledPlaceTransportDetailInput = styled.input<{
+  disabled: boolean;
+}>`
   font-family: Montserrat;
   font-size: 18px;
   font-weight: 400;
@@ -83,9 +85,12 @@ export const StyledPlaceTransportDetailInput = styled.input`
   max-width: 30.7rem;
   padding: 1.2rem;
   background: #343b26;
+  ${(props) => props.disabled && `color: #454f30;`}
 `;
 
-export const StyledPlaceTransportDetailButton = styled.button`
+export const StyledPlaceTransportDetailButton = styled.button<{
+  disabled: boolean;
+}>`
   background-color: #e5dcbf;
   width: 8.4rem;
   padding: 1.2rem 1rem;
@@ -96,4 +101,5 @@ export const StyledPlaceTransportDetailButton = styled.button`
   text-align: center;
   color: #454f30;
   cursor: pointer;
+  ${(props) => props.disabled && `color: #454f30;`}
 `;

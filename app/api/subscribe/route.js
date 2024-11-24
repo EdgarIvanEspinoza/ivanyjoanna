@@ -2,31 +2,33 @@ import mailchimp from '@mailchimp/mailchimp_marketing';
 
 mailchimp.setConfig({
   apiKey: process.env.MAILCHIMP_API_KEY,
-  server: process.env.MAILCHIMP_SERVER_PREFIX,
+  server: process.env.MAILCHIMP_API_SERVER,
 });
 
 export async function POST(request) {
   try {
     const { email } = await request.json();
 
-    if (!email || email.trim() === '') {
-      return new Response(
-        JSON.stringify({ error: 'El email es obligatorio' }),
-        {
-          status: 400,
-        }
-      );
+    if (!email || !email.includes('@')) {
+      return new Response(JSON.stringify({ error: 'Email inválido' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    const response = await mailchimp.lists.addListMember('YOUR_LIST_ID', {
-      email_address: email,
-      status: 'subscribed',
-    });
+    const response = await mailchimp.lists.addListMember(
+      process.env.MAILCHIMP_LIST_ID,
+      {
+        email_address: email,
+        status: 'subscribed',
+      }
+    );
 
     return new Response(
-      JSON.stringify({ message: '¡Email registrado con éxito!', response }),
+      JSON.stringify({ message: 'Suscripción exitosa', response }),
       {
         status: 200,
+        headers: { 'Content-Type': 'application/json' },
       }
     );
   } catch (error) {
@@ -34,7 +36,7 @@ export async function POST(request) {
       JSON.stringify({
         error: `Error al registrar el email: ${error.message}`,
       }),
-      { status: 500 }
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }

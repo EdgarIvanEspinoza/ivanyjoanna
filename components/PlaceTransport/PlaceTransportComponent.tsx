@@ -15,10 +15,12 @@ import Image from 'next/image';
 export const PlaceTransportComponent = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [fetching, setFetching] = useState(false);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setMessage('');
+    setFetching(true);
     try {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
@@ -29,13 +31,16 @@ export const PlaceTransportComponent = () => {
       });
 
       if (res.ok) {
+        setFetching(false);
         setMessage('¡Gracias por suscribirte!');
         setEmail('');
       } else {
+        setFetching(false);
         const errorData = await res.json();
         setMessage(errorData.error || 'Hubo un problema, intenta más tarde.');
       }
     } catch (err) {
+      setFetching(false);
       setMessage('Hubo un error, por favor intenta más tarde.');
     }
   };
@@ -83,10 +88,12 @@ export const PlaceTransportComponent = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={fetching}
             />
             <StyledPlaceTransportDetailButton
               type="submit"
               onClick={handleSubmit}
+              disabled={fetching}
             >
               Enviar
             </StyledPlaceTransportDetailButton>
