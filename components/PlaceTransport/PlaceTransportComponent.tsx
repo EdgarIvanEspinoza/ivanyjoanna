@@ -46,7 +46,7 @@ export const PlaceTransportComponent = () => {
   };
 
   return (
-    <StyledPlaceTransportWrapper>
+    <StyledPlaceTransportWrapper id="lugar-y-transporte">
       <StyledPlaceTransportTitle>Lugar y Transporte</StyledPlaceTransportTitle>
       <StyledPlaceTransportDetailBoxWrapper>
         <StyledPlaceTransportDetailBox>
@@ -67,7 +67,7 @@ export const PlaceTransportComponent = () => {
             Madrid, Spain.
           </StyledPlaceTransportDetailText>
         </StyledPlaceTransportDetailBox>
-        <StyledPlaceTransportDetailBox>
+        <StyledPlaceTransportDetailBox id="rsvp">
           <Image
             src="/assets/images/elf-boat.svg"
             alt="img-elf-boat"

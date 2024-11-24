@@ -14,7 +14,7 @@ import { PathStepComponent } from './PathStep/PathStepComponent';
 export const OurHistoryComponent = () => {
   const { isLargeScreen } = useScreenSize();
   return (
-    <StyledOurHistoryWrapper>
+    <StyledOurHistoryWrapper id="nosotros">
       {!isLargeScreen && <DecoratorMobileComponent />}
       <StyledOurHistoryTitle>Nuestra Historia</StyledOurHistoryTitle>
       {isLargeScreen ? (
