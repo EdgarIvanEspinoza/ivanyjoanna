@@ -120,12 +120,12 @@ export const RSVPForm = ({ email }: Props) => {
         allergy === 'Otro' ? customAllergy : allergy
       );
     }
-
+    console.log({ ...data, allergies: finalAllergies, email });
     try {
       const res = await fetch(`/api/rsvp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, email }),
+        body: JSON.stringify({ ...data, allergies: finalAllergies, email }),
       });
 
       if (res.ok) {
@@ -144,15 +144,15 @@ export const RSVPForm = ({ email }: Props) => {
       <StyledTopDecoratorWrapper>
         <DecoratorMobileComponent />
       </StyledTopDecoratorWrapper>
-      <form onSubmit={handleSubmit(onSubmit)} style={{ flex: '1' }}>
-        <StyledFormWrapper>
-          {loading ? (
-            <Loading />
-          ) : (
-            <>
-              {message ? (
-                <StyledFormMessageResponse>{message}</StyledFormMessageResponse>
-              ) : (
+      <StyledFormWrapper>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            {message ? (
+              <StyledFormMessageResponse>{message}</StyledFormMessageResponse>
+            ) : (
+              <form onSubmit={handleSubmit(onSubmit)} style={{ flex: '1' }}>
                 <>
                   <StyledFormLabel>
                     ¿Aceptas unirte a nuestra Comunidad para celebrar este
@@ -294,11 +294,11 @@ export const RSVPForm = ({ email }: Props) => {
                     Aceptar el llamado a la aventura
                   </StyledFormButton>
                 </>
-              )}
-            </>
-          )}
-        </StyledFormWrapper>
-      </form>
+              </form>
+            )}
+          </>
+        )}
+      </StyledFormWrapper>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <FellowshipSeparatorComponent />
         <FooterComponent />

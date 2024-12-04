@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 export const StyledWrapper = styled.div`
-  display: 'grid';
-  min-height: '100vh';
-  grid-template-rows: 'auto 1fr auto';
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr auto;
 `;
 
 export const StyledFormWrapper = styled.div`
@@ -49,9 +49,10 @@ export const StyledFormInput = styled.input`
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
   color: #e5dcbf;
-  width: auto;
+  width: 100%;
   padding: 1.2rem;
   background: #343b26;
+  margin-top: 0.8rem;
 
   &:not(:placeholder-shown) {
     background: #343b26;
@@ -67,9 +68,10 @@ export const StyledFormSelect = styled.select`
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
   color: #e5dcbf;
-  width: auto;
+  width: 100%;
   padding: 1.2rem;
   background: #343b26;
+  margin-top: 0.8rem;
 `;
 
 export const StyledFormButton = styled.button`
@@ -161,4 +163,5 @@ export const StyledFormMessageResponse = styled.div`
   padding: 1.2rem;
   font-size: 18px;
   font-weight: 400;
+  height: 100%;
 `;
