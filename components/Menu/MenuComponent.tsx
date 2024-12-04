@@ -1,9 +1,6 @@
-import { useScreenSize } from '@/Contexts/ScreenContext';
 import { StyledLi, StyledLiRSVP, StyledUlMenu } from './Styles';
 
 export const MenuComponent = () => {
-  const { isLargeScreen } = useScreenSize();
-
   return (
     <>
       <nav>

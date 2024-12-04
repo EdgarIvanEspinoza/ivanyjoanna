@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+export const StyledWrapper = styled.div`
+  display: 'grid';
+  min-height: '100vh';
+  grid-template-rows: 'auto 1fr auto';
+`;
+
 export const StyledFormWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -14,6 +20,13 @@ export const StyledFormWrapper = styled.div`
     padding: 2.2rem;
     margin: 0;
   }
+`;
+
+export const StyledTopDecoratorWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
 `;
 
 export const StyledFormLabel = styled.h1`
@@ -138,4 +151,14 @@ export const StyledFormInputAllergies = styled.input`
 export const StyledFormInputAllergiesWrapper = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+export const StyledFormMessageResponse = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin: 1.2rem auto;
+  padding: 1.2rem;
+  font-size: 18px;
+  font-weight: 400;
 `;

@@ -3,20 +3,25 @@
 import { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import {
+  StyledFormAllergiesWrapper,
   StyledFormButton,
+  StyledFormCheckbox,
   StyledFormInput,
+  StyledFormInputAllergies,
+  StyledFormInputAllergiesWrapper,
   StyledFormLabel,
+  StyledFormLabelAllergies,
+  StyledFormLabelDescription,
+  StyledFormMessageResponse,
   StyledFormSelect,
   StyledFormWrapper,
-  StyledFormLabelAllergies,
-  StyledFormAllergiesWrapper,
-  StyledFormInputAllergies,
-  StyledFormCheckbox,
-  StyledFormLabelDescription,
-  StyledFormInputAllergiesWrapper,
+  StyledTopDecoratorWrapper,
+  StyledWrapper,
 } from './Styles';
 import { FooterComponent } from '../Footer/FooterComponent';
 import { Loading } from '../Loading/Loading';
+import { FellowshipSeparatorComponent } from '../FellowshipSeparator/FellowshipSeparatorComponent';
+import { DecoratorMobileComponent } from '../OurHistory/DecoratorMobile/DecoratorMobileComponent';
 
 type Props = {
   email: string;
@@ -135,8 +140,10 @@ export const RSVPForm = ({ email }: Props) => {
   };
 
   return (
-    <>
-      <FooterComponent />
+    <StyledWrapper>
+      <StyledTopDecoratorWrapper>
+        <DecoratorMobileComponent />
+      </StyledTopDecoratorWrapper>
       <form onSubmit={handleSubmit(onSubmit)} style={{ flex: '1' }}>
         <StyledFormWrapper>
           {loading ? (
@@ -144,19 +151,21 @@ export const RSVPForm = ({ email }: Props) => {
           ) : (
             <>
               {message ? (
-                <StyledFormLabelDescription>
-                  {message}
-                </StyledFormLabelDescription>
+                <StyledFormMessageResponse>{message}</StyledFormMessageResponse>
               ) : (
                 <>
                   <StyledFormLabel>
-                    ¿Quieres confirmar tu asistencia al evento?
+                    ¿Aceptas unirte a nuestra Comunidad para celebrar este
+                    evento único?
                   </StyledFormLabel>
                   <StyledFormLabelDescription>
                     Por favor, completa el siguiente formulario para confirmar
-                    tu asistencia y ayudar a planear el evento.
+                    tu asistencia y ayudar a preparar este gran acontecimiento
+                    digno de una historia en la Tierra Media.
                   </StyledFormLabelDescription>
-                  <StyledFormLabel>Tu correo</StyledFormLabel>
+                  <StyledFormLabel>
+                    Tu palantir de comunicación (correo electrónico)
+                  </StyledFormLabel>
                   <StyledFormInput
                     disabled={true}
                     value={decodeURIComponent(email)}
@@ -169,11 +178,12 @@ export const RSVPForm = ({ email }: Props) => {
                   />
 
                   <StyledFormLabel>
-                    ¿Requieres ayuda con el alojamiento para el evento?
+                    ¿Requieres ayuda para encontrar refugio en las tierras
+                    cercanas?{' '}
                   </StyledFormLabel>
                   <StyledFormLabelDescription>
-                    Podemos darte ideas, conseguir ofertas y buscarte un lugar
-                    cercano.
+                    Podemos actuar como tu fiel Gandalf, buscando posadas
+                    seguras y ofertas mágicas para tu alojamiento.
                   </StyledFormLabelDescription>
 
                   <StyledFormSelect
@@ -186,8 +196,8 @@ export const RSVPForm = ({ email }: Props) => {
                   </StyledFormSelect>
 
                   <StyledFormLabel>
-                    ¿Tienes alguna alergia o intolerancia que debamos considerar
-                    para el banquete élfico?
+                    ¿Tienes alguna maldición o vulnerabilidad alimenticia que
+                    debamos tener en cuenta para el banquete élfico?
                   </StyledFormLabel>
                   <StyledFormAllergiesWrapper>
                     {allergiesOptions.map((allergy) => (
@@ -221,9 +231,12 @@ export const RSVPForm = ({ email }: Props) => {
                   )}
 
                   <StyledFormLabel>
-                    Por favor, confirma tu asistencia seleccionando una de las
-                    opciones a continuación:
+                    Confirma tu juramento de asistencia a esta travesía
                   </StyledFormLabel>
+                  <StyledFormLabelDescription>
+                    Podemos actuar como tu fiel Gandalf, buscando posadas
+                    seguras y ofertas mágicas para tu alojamiento.
+                  </StyledFormLabelDescription>
                   <StyledFormSelect
                     {...register('rsvp', {
                       required: 'Este campo es obligatorio',
@@ -240,11 +253,11 @@ export const RSVPForm = ({ email }: Props) => {
                   </StyledFormSelect>
 
                   <StyledFormLabel>
-                    ¿Te gustaría traer a un invitado adicional?
+                    ¿Te acompañará algún compañero en esta travesía?
                   </StyledFormLabel>
                   <StyledFormLabelDescription>
-                    Si es así, por favor indícanos su nombre para incluirlo en
-                    nuestra Comunidad del Anillo.
+                    Si deseas traer a un invitado adicional, indícanos su nombre
+                    para que podamos incluirlo en nuestra Comunidad del Anillo.
                   </StyledFormLabelDescription>
                   <StyledFormInput {...register('guest')} />
 
@@ -254,7 +267,8 @@ export const RSVPForm = ({ email }: Props) => {
                   <StyledFormLabelDescription>
                     Si es así, por favor selecciona tu tierra de origen (no se
                     necesitan mapas de la Tierra Media). Te podemos ayudar a
-                    conseguir los mejores precios en vuelos y traslados.
+                    encontrar los mejores caminos (y vuelos) hacia la
+                    celebración.
                   </StyledFormLabelDescription>
                   <StyledFormSelect
                     {...register('country', {
@@ -264,6 +278,7 @@ export const RSVPForm = ({ email }: Props) => {
                     <option value="Venezuela">Venezuela</option>
                     <option value="USA">Estados Unidos</option>
                     <option value="UK">Reino Unido</option>
+                    <option value="Espana">España</option>
                     <option value="Alemania">Alemania</option>
                     <option value="Francia">Francia</option>
                     <option value="Portugal">Portugal</option>
@@ -275,14 +290,19 @@ export const RSVPForm = ({ email }: Props) => {
                     <option value="Otro">Otro...</option>
                   </StyledFormSelect>
 
-                  <StyledFormButton type="submit">Enviar</StyledFormButton>
-                  {message && <p>{message}</p>}
+                  <StyledFormButton type="submit">
+                    Aceptar el llamado a la aventura
+                  </StyledFormButton>
                 </>
               )}
             </>
           )}
         </StyledFormWrapper>
       </form>
-    </>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <FellowshipSeparatorComponent />
+        <FooterComponent />
+      </div>
+    </StyledWrapper>
   );
 };
