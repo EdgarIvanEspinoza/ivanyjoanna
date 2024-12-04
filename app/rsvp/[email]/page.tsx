@@ -1,3 +1,5 @@
+'use client';
+
 import { RSVPForm } from '@/components/RSVP/RSVPForm';
 
 export default function RSVP({ params }: { params: { email: string } }) {

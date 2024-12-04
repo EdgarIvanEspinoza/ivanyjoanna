@@ -179,7 +179,7 @@ export const RSVPForm = ({ email }: Props) => {
 
                   <StyledFormLabel>
                     ¿Requieres ayuda para encontrar refugio en las tierras
-                    cercanas?{' '}
+                    cercanas?
                   </StyledFormLabel>
                   <StyledFormLabelDescription>
                     Podemos actuar como tu fiel Gandalf, buscando posadas
@@ -199,6 +199,12 @@ export const RSVPForm = ({ email }: Props) => {
                     ¿Tienes alguna maldición o vulnerabilidad alimenticia que
                     debamos tener en cuenta para el banquete élfico?
                   </StyledFormLabel>
+                  <StyledFormLabelDescription>
+                    Por favor, indícanos si eres vegetariano, vegano,
+                    pescetariano o tienes alergias a alimentos específicos como
+                    gluten, frutos secos, lácteos, etc. Queremos asegurarnos de
+                    que disfrutes de la experiencia al máximo.
+                  </StyledFormLabelDescription>
                   <StyledFormAllergiesWrapper>
                     {allergiesOptions.map((allergy) => (
                       <div key={allergy} style={{ marginBottom: '8px' }}>
