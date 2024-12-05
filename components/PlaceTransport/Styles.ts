@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
 export const StyledPlaceTransportWrapper = styled.div`
@@ -102,4 +103,12 @@ export const StyledPlaceTransportDetailButton = styled.button<{
   color: #454f30;
   cursor: pointer;
   ${(props) => props.disabled && `color: #454f30;`}
+`;
+
+export const StyledLink = styled(Link)`
+  font-weight: 700;
+  text-decoration: underline;
+  font-family: Montserrat;
+  font-weight: 700;
+  font-size: 1.8rem;
 `;

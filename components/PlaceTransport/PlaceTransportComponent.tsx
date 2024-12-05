@@ -9,6 +9,7 @@ import {
   StyledPlaceTransportDetailInput,
   StyledPlaceTransportDetailButton,
   StyledPlaceTransportDetailFormWrapper,
+  StyledLink,
 } from './Styles';
 import Image from 'next/image';
 
@@ -17,10 +18,11 @@ export const PlaceTransportComponent = () => {
   const [message, setMessage] = useState('');
   const [fetching, setFetching] = useState(false);
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setMessage('');
     setFetching(true);
+
     try {
       const res = await fetch('/api/subscribe', {
         method: 'POST',
@@ -30,18 +32,37 @@ export const PlaceTransportComponent = () => {
         body: JSON.stringify({ email }),
       });
 
+      const responseData = await res.json();
+
       if (res.ok) {
-        setFetching(false);
-        setMessage('¡Gracias por suscribirte!');
+        setMessage(responseData.message || '¡Gracias por suscribirte!');
         setEmail('');
       } else {
-        setFetching(false);
-        const errorData = await res.json();
-        setMessage(errorData.error || 'Hubo un problema, intenta más tarde.');
+        // Manejo de códigos específicos
+        switch (res.status) {
+          case 418:
+            setMessage(
+              responseData.message ||
+                'Este email ya está registrado. ¡Gracias por ser parte!'
+            );
+            break;
+          case 412:
+            setMessage(
+              responseData.error ||
+                'El email fue eliminado permanentemente. Por favor, vuelve a suscribirte manualmente.'
+            );
+            break;
+          default:
+            setMessage(
+              responseData.error || 'Hubo un problema, intenta más tarde.'
+            );
+        }
       }
     } catch (err) {
-      setFetching(false);
+      console.error('Error en la conexión:', err);
       setMessage('Hubo un error, por favor intenta más tarde.');
+    } finally {
+      setFetching(false);
     }
   };
 
@@ -66,6 +87,13 @@ export const PlaceTransportComponent = () => {
             <br />
             Madrid, Spain.
           </StyledPlaceTransportDetailText>
+          <StyledLink
+            href="https://maps.app.goo.gl/DXTmbvcLMPfCjrkVA"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Google Maps
+          </StyledLink>
         </StyledPlaceTransportDetailBox>
         <StyledPlaceTransportDetailBox id="rsvp">
           <Image
@@ -82,23 +110,24 @@ export const PlaceTransportComponent = () => {
             enviarte una actualización apenas tengamos la información.
           </StyledPlaceTransportDetailText>
           <StyledPlaceTransportDetailFormWrapper>
-            <StyledPlaceTransportDetailInput
-              type="email"
-              placeholder="Escribe tu email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              disabled={fetching}
-            />
-            <StyledPlaceTransportDetailButton
-              type="submit"
-              onClick={handleSubmit}
-              disabled={fetching}
-            >
-              Enviar
-            </StyledPlaceTransportDetailButton>
+            <form onSubmit={handleSubmit}>
+              <StyledPlaceTransportDetailInput
+                type="email"
+                placeholder="Escribe tu email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={fetching}
+              />
+              <StyledPlaceTransportDetailButton
+                type="submit"
+                disabled={fetching}
+              >
+                Enviar
+              </StyledPlaceTransportDetailButton>
+            </form>
           </StyledPlaceTransportDetailFormWrapper>
-          {message && <p>{message}</p>}
+          <p>{message || ''}</p>
         </StyledPlaceTransportDetailBox>
       </StyledPlaceTransportDetailBoxWrapper>
     </StyledPlaceTransportWrapper>

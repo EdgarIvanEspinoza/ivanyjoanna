@@ -23,15 +23,24 @@ export async function POST(request) {
         status: 'subscribed',
       }
     );
-
     return new Response(
-      JSON.stringify({ message: 'Suscripción exitosa', response }),
+      JSON.stringify({ message: '¡Gracias por suscribirte!', response }),
       {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       }
     );
   } catch (error) {
+    if (error.response?.body?.title === 'Member Exists') {
+      return new Response(
+        JSON.stringify({
+          message:
+            'El email ya está registrado en la lista. No es necesario volver a suscribirse.',
+        }),
+        { status: 418, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     if (
       error.response?.body?.title === 'Forgotten Email Not Subscribed' &&
       error.response?.body?.detail?.includes('permanently deleted')
@@ -41,7 +50,7 @@ export async function POST(request) {
           error:
             'El email fue eliminado permanentemente y necesita volver a suscribirse manualmente.',
         }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
+        { status: 412, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
