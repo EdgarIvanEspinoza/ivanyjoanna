@@ -55,6 +55,9 @@ const allergiesOptions = [
   'Frutos secos',
   'Huevos',
   'Soja',
+  'Soy Vegano/a',
+  'Soy Vegatariano/a',
+  'Soy Pescetariano/a',
   'Otro',
 ];
 
@@ -240,8 +243,8 @@ export const RSVPForm = ({ email }: Props) => {
                     Confirma tu juramento de asistencia a esta travesía
                   </StyledFormLabel>
                   <StyledFormLabelDescription>
-                    Podemos actuar como tu fiel Gandalf, buscando posadas
-                    seguras y ofertas mágicas para tu alojamiento.
+                    La Comarca, Rivendel y Mordor esperan. Confirma tu
+                    asistencia y sé parte de nuestra historia.
                   </StyledFormLabelDescription>
                   <StyledFormSelect
                     {...register('rsvp', {
