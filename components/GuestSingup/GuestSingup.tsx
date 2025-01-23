@@ -4,10 +4,12 @@ import {
   StyledSignupWrapper,
   StyledSingupDescription,
 } from './Styles';
+import { DecoratorMobileComponent } from '../OurHistory/DecoratorMobile/DecoratorMobileComponent';
 
 export const GuestSignup = () => {
   return (
     <StyledSignupWrapper id="rsvp">
+      <DecoratorMobileComponent />
       <StyledSignupTitle>Únete a la comunidad del anillo</StyledSignupTitle>
       <StyledSingupDescription>
         <i>

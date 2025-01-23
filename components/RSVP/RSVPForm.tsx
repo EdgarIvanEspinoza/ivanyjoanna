@@ -55,9 +55,9 @@ const allergiesOptions = [
   'Frutos secos',
   'Huevos',
   'Soja',
-  'Soy Vegano/a',
-  'Soy Vegatariano/a',
-  'Soy Pescetariano/a',
+  'Vegano/a',
+  'Vegatariano/a',
+  'Pescetariano/a',
   'Otro',
 ];
 

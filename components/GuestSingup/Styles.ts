@@ -4,8 +4,6 @@ export const StyledSignupWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 8rem;
-  margin-bottom: 8rem;
 
   @media (max-width: 980px) {
     font-size: 3.6rem;
