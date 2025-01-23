@@ -2,10 +2,10 @@ import styled from 'styled-components';
 import Image from 'next/image';
 
 export const StyledPathStepWrapper = styled.div<{
-  reverse: boolean;
-  top: string;
-  left?: string;
-  right?: string;
+  $reverse: boolean;
+  $top: string;
+  $left?: string;
+  $right?: string;
 }>`
   display: flex;
   align-items: center;
@@ -15,10 +15,10 @@ export const StyledPathStepWrapper = styled.div<{
   height: 100%;
   position: absolute;
   top: 25rem;
-  ${(props) => props.top && `top: ${props.top};`};
-  ${(props) => props.left && `left: ${props.left};`};
-  ${(props) => props.right && `right: ${props.right};`};
-  ${(props) => props.reverse && 'flex-direction: row-reverse;'};
+  ${(props) => props.$top && `top: ${props.$top};`};
+  ${(props) => props.$left && `left: ${props.$left};`};
+  ${(props) => props.$right && `right: ${props.$right};`};
+  ${(props) => props.$reverse && 'flex-direction: row-reverse;'};
 
   @media (max-width: 980px) {
     flex-direction: column;
@@ -26,7 +26,7 @@ export const StyledPathStepWrapper = styled.div<{
     right: 50%;
     transform: translate(-50%, -50%);
 
-    ${(props) => props.top && `top: calc(${props.top} * 2.2);`};
+    ${(props) => props.$top && `top: calc(${props.$top} * 2.2);`};
   }
 `;
 

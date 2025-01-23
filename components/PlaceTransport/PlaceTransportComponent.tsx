@@ -21,6 +21,7 @@ export const PlaceTransportComponent = () => {
             alt="hobbit-door"
             width={81}
             height={61}
+            priority
           />
           <StyledPlaceTransportDetailTitle>
             Ceremonia y fiesta

@@ -27,7 +27,9 @@ export const PathStepComponent = ({
   right,
 }: Props): React.ReactElement => {
   return (
-    <StyledPathStepWrapper {...{ reverse, top, left, right }}>
+    <StyledPathStepWrapper
+      {...{ $reverse: reverse, $top: top, $left: left, $right: right }}
+    >
       <StyledPathStepImage
         src={imageUrl}
         alt="Image"

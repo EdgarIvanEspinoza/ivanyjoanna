@@ -1,10 +1,9 @@
-import { StyledFooterWrapper } from './Styles';
-import Image from 'next/image';
+import { StyledFooterImage, StyledFooterWrapper } from './Styles';
 
 export const FooterComponent = () => {
   return (
     <StyledFooterWrapper>
-      <Image
+      <StyledFooterImage
         src="/assets/images/gondor-tree.svg"
         alt="img-gondor-tree"
         width={65.73}

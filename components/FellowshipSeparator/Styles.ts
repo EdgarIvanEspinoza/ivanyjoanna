@@ -15,5 +15,7 @@ export const StyledFellowshipWrapper = styled.div`
 `;
 
 export const StyledFellowshipImage = styled(Image)`
+  width: 100%;
+  height: auto;
   max-width: 40.6rem;
 `;

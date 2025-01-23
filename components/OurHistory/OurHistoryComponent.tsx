@@ -38,6 +38,7 @@ export const OurHistoryComponent = () => {
           alt="history-road"
           width="288"
           height="1965"
+          priority
         />
       )}
       <StyledPathStepComponentWrapper>

@@ -16,6 +16,7 @@ export const HeroDoorComponent = () => {
           alt="Image"
           width={563}
           height={662}
+          priority
         />
       ) : (
         <StyledDoorImageMobile
@@ -23,6 +24,7 @@ export const HeroDoorComponent = () => {
           alt="Image"
           width={347}
           height={408}
+          priority
         />
       )}
       <StyledLabelDoorTitle>Joanna & Ivan</StyledLabelDoorTitle>

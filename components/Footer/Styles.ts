@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import styled from 'styled-components';
 
 export const StyledFooterWrapper = styled.div`
@@ -8,4 +9,9 @@ export const StyledFooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+export const StyledFooterImage = styled(Image)`
+  width: auto;
+  height: auto;
 `;

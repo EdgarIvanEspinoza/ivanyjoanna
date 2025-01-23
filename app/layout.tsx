@@ -20,10 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ScreenSizeProvider>
-      <html lang="es">
-        <body className={montaga.className}>{children}</body>
-      </html>
-    </ScreenSizeProvider>
+    <html lang="es">
+      <body className={montaga.className}>
+        <ScreenSizeProvider>{children}</ScreenSizeProvider>
+      </body>
+    </html>
   );
 }

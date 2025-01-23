@@ -6,9 +6,9 @@ export const FellowshipSeparatorComponent = () => {
       <StyledFellowshipImage
         src="/assets/images/fellowship.svg"
         alt="Image"
-        layout="responsive"
         width={538}
         height={82}
+        priority
       />
     </StyledFellowshipWrapper>
   );
