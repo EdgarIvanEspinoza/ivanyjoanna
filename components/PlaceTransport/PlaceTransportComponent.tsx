@@ -40,7 +40,7 @@ export const PlaceTransportComponent = () => {
             Google Maps
           </StyledLink>
         </StyledPlaceTransportDetailBox>
-        <StyledPlaceTransportDetailBox id="rsvp">
+        <StyledPlaceTransportDetailBox>
           <Image
             src="/assets/images/elf-boat.svg"
             alt="img-elf-boat"

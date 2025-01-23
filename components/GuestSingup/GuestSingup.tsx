@@ -7,7 +7,7 @@ import {
 
 export const GuestSignup = () => {
   return (
-    <StyledSignupWrapper>
+    <StyledSignupWrapper id="rsvp">
       <StyledSignupTitle>Únete a la comunidad del anillo</StyledSignupTitle>
       <StyledSingupDescription>
         <i>
