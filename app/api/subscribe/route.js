@@ -34,8 +34,7 @@ export async function POST(request) {
     if (error.response?.body?.title === 'Member Exists') {
       return new Response(
         JSON.stringify({
-          message:
-            'El email ya está registrado en la lista. No es necesario volver a suscribirse.',
+          message: 'El email ya está registrado en la lista.',
         }),
         { status: 418, headers: { 'Content-Type': 'application/json' } }
       );
@@ -47,8 +46,7 @@ export async function POST(request) {
     ) {
       return new Response(
         JSON.stringify({
-          error:
-            'El email fue eliminado permanentemente y necesita volver a suscribirse manualmente.',
+          error: 'El email fue eliminado permanentemente.',
         }),
         { status: 412, headers: { 'Content-Type': 'application/json' } }
       );
