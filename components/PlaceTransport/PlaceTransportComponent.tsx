@@ -55,7 +55,7 @@ export const PlaceTransportComponent = () => {
             Estamos aun ajustando algunos detalles, déjanos tu email para
             enviarte una actualización apenas tengamos la información.
           </StyledPlaceTransportDetailText>
-          <GuestListSignup />
+          <GuestListSignup formId="place-transport" />
         </StyledPlaceTransportDetailBox>
       </StyledPlaceTransportDetailBoxWrapper>
     </StyledPlaceTransportWrapper>

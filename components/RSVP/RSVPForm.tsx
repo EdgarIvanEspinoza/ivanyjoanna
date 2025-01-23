@@ -172,6 +172,8 @@ export const RSVPForm = ({ email }: Props) => {
                   <StyledFormInput
                     disabled={true}
                     value={decodeURIComponent(email)}
+                    id="email"
+                    autoComplete="off"
                   />
                   <StyledFormLabel>Nombre completo</StyledFormLabel>
                   <StyledFormInput
@@ -280,6 +282,7 @@ export const RSVPForm = ({ email }: Props) => {
                     celebración.
                   </StyledFormLabelDescription>
                   <StyledFormSelect
+                    autoComplete="off"
                     {...register('country', {
                       required: 'Este campo es obligatorio',
                     })}

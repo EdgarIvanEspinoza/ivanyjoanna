@@ -5,7 +5,11 @@ import {
   StyledResponseMessage,
 } from './Styles';
 
-export const GuestListSignup = () => {
+type Props = {
+  formId: string;
+};
+
+export const GuestListSignup = ({ formId }: Props) => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [fetching, setFetching] = useState(false);
@@ -59,7 +63,7 @@ export const GuestListSignup = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} id={formId}>
         <StyledPlaceTransportDetailInput
           type="email"
           placeholder="Escribe tu email"
@@ -67,6 +71,8 @@ export const GuestListSignup = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
           disabled={fetching}
+          id="email"
+          autoComplete="email"
         />
         <StyledPlaceTransportDetailButton type="submit" disabled={fetching}>
           Enviar

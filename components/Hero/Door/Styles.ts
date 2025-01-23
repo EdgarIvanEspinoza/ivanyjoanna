@@ -17,7 +17,7 @@ export const StyledDoorImageMobile = styled(Image)`
   object-fit: cover;
 `;
 
-export const StyledLabelDoorTitle = styled.label`
+export const StyledLabelDoorTitle = styled.h2`
   position: absolute;
   top: 24rem;
   left: 50%;
@@ -37,7 +37,7 @@ export const StyledLabelDoorTitle = styled.label`
   }
 `;
 
-export const StyledLabelDoorSubtitle = styled.label`
+export const StyledLabelDoorSubtitle = styled.h5`
   position: absolute;
   top: 30.5rem;
   left: 50%;

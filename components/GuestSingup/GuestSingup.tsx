@@ -25,7 +25,7 @@ export const GuestSignup = () => {
       <StyledSingupDescription>
         ¡Forma parte de nuestra historia!
       </StyledSingupDescription>
-      <GuestListSignup />
+      <GuestListSignup formId="rsvp" />
     </StyledSignupWrapper>
   );
 };
