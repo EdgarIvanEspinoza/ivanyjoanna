@@ -7,7 +7,7 @@ import {
   StyledPlaceTransportWrapper,
   StyledLink,
 } from './Styles';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { GuestListSignup } from '@/components/Common/GuestListSignup/GuestListSignup';
 
 export const PlaceTransportComponent = () => {

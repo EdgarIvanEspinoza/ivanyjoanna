@@ -13,7 +13,7 @@ import {
   StyledDetailWrapper,
   MapWrapper,
 } from './Styles';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import { useScreenSize } from '@/Contexts/ScreenContext';
 
 export const TravelPage = () => {

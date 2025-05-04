@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 
 const starAnimation = keyframes`
   0% {
