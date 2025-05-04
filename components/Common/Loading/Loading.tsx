@@ -1,5 +1,5 @@
 import { StyledLoadingWrapper } from './Style';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 
 export const Loading = () => {
   return (

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 
 export const StyledDecoratorMobileImage = styled(Image)`
   width: 8rem;

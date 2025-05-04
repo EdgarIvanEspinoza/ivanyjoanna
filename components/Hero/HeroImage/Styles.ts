@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 
 export const StyledHeroImage = styled(Image)`
   border-radius: 298.44px;
