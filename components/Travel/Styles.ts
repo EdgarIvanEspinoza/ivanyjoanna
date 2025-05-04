@@ -79,6 +79,11 @@ export const StyledDetailWrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  max-width: 50%;
+
+  @media (max-width: 980px) {
+    max-width: 100%;
+  }
 `;
 
 export const StyledLink = styled(Link)`

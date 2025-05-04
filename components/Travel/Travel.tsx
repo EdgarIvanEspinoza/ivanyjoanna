@@ -187,7 +187,7 @@ export const TravelPage = () => {
 
         <StyledPlaceTransportTitle>Transporte</StyledPlaceTransportTitle>
         <StyledPlaceTransportDetailBox>
-          <div>
+          <div style={{ width: '100%' }}>
             <Image
               src="/assets/photos/estacion-tren-aranjuez.jpeg"
               alt="estacion-tren-aranjuez"
