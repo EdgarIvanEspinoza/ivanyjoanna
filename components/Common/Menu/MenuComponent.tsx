@@ -6,13 +6,13 @@ export const MenuComponent = () => {
       <nav>
         <StyledUlMenu>
           <StyledLi className="hover-animation">
-            <a href="#nosotros">Nosotros</a>
+            <a href="/#nosotros">Nosotros</a>
           </StyledLi>
           <StyledLi className="hover-animation">
-            <a href="#lugar-y-transporte">Lugar y Transporte</a>
+            <a href="/travel">Lugar y Transporte</a>
           </StyledLi>
           <StyledLiRSVP className="rsvp-hover-animation">
-            <a href="#rsvp">RSVP</a>
+            <a href="/#rsvp">RSVP</a>
           </StyledLiRSVP>
         </StyledUlMenu>
       </nav>

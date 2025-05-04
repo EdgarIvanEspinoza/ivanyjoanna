@@ -1,11 +1,11 @@
 'use client';
 
 import { HeroComponent } from '@/components/Hero/HeroComponent';
-import { MenuComponent } from '@/components/Menu/MenuComponent';
+import { MenuComponent } from '@/components/Common/Menu/MenuComponent';
 import { OurHistoryComponent } from '@/components/OurHistory/OurHistoryComponent';
 import { PlaceTransportComponent } from '@/components/PlaceTransport/PlaceTransportComponent';
-import { FooterComponent } from '@/components/Footer/FooterComponent';
-import { FellowshipSeparatorComponent } from '@/components/FellowshipSeparator/FellowshipSeparatorComponent';
+import { FooterComponent } from '@/components/Common/Footer/FooterComponent';
+import { FellowshipSeparatorComponent } from '@/components/Common/FellowshipSeparator/FellowshipSeparatorComponent';
 import { GuestSignup } from '@/components/GuestSingup/GuestSingup';
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
         <OurHistoryComponent />
         <GuestSignup />
         <FellowshipSeparatorComponent />
-        <PlaceTransportComponent />
+        {/* <PlaceTransportComponent /> */}
         <FooterComponent />
       </div>
     </main>

@@ -1,5 +1,5 @@
 import { useScreenSize } from '@/Contexts/ScreenContext';
-import { DecoratorMobileComponent } from './DecoratorMobile/DecoratorMobileComponent';
+import { DecoratorComponent } from '../Common/Decorator/DecoratorComponent';
 import {
   StyledForever,
   StyledOurHistoryTitle,
@@ -15,7 +15,7 @@ export const OurHistoryComponent = () => {
   const { isLargeScreen } = useScreenSize();
   return (
     <StyledOurHistoryWrapper id="nosotros">
-      {!isLargeScreen && <DecoratorMobileComponent />}
+      {!isLargeScreen && <DecoratorComponent />}
       <StyledOurHistoryTitle>Nuestra Historia</StyledOurHistoryTitle>
       {isLargeScreen ? (
         <>

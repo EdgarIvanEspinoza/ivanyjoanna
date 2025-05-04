@@ -18,10 +18,10 @@ import {
   StyledTopDecoratorWrapper,
   StyledWrapper,
 } from './Styles';
-import { FooterComponent } from '../Footer/FooterComponent';
-import { Loading } from '../Loading/Loading';
-import { FellowshipSeparatorComponent } from '../FellowshipSeparator/FellowshipSeparatorComponent';
-import { DecoratorMobileComponent } from '../OurHistory/DecoratorMobile/DecoratorMobileComponent';
+import { FooterComponent } from '../Common/Footer/FooterComponent';
+import { Loading } from '../Common/Loading/Loading';
+import { FellowshipSeparatorComponent } from '../Common/FellowshipSeparator/FellowshipSeparatorComponent';
+import { DecoratorComponent } from '../Common/Decorator/DecoratorComponent';
 
 type Props = {
   email: string;
@@ -145,7 +145,7 @@ export const RSVPForm = ({ email }: Props) => {
   return (
     <StyledWrapper>
       <StyledTopDecoratorWrapper>
-        <DecoratorMobileComponent />
+        <DecoratorComponent />
       </StyledTopDecoratorWrapper>
       <StyledFormWrapper>
         {loading ? (
