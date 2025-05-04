@@ -14,8 +14,11 @@ import {
   MapWrapper,
 } from './Styles';
 import Image from 'next/image';
+import { useScreenSize } from '@/Contexts/ScreenContext';
 
 export const TravelPage = () => {
+  const { isLargeScreen } = useScreenSize();
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <div style={{ alignSelf: 'center' }}>
@@ -24,19 +27,23 @@ export const TravelPage = () => {
       <MenuComponent />
       <FellowshipSeparatorComponent />
       <StyledPlaceTransportWrapper id="lugar-y-transporte">
-        <StyledPlaceTransportTitle>
-          Mapa de la Tierra Media
-        </StyledPlaceTransportTitle>
-        <MapWrapper>
-          <iframe
-            src="https://snazzymaps.com/embed/706531"
-            width="100%"
-            height="600px"
-          ></iframe>
-        </MapWrapper>
+        {isLargeScreen && (
+          <>
+            <StyledPlaceTransportTitle>
+              Mapa de la Tierra Media
+            </StyledPlaceTransportTitle>
+            <MapWrapper>
+              <iframe
+                src="https://snazzymaps.com/embed/706531"
+                width="100%"
+                height="600px"
+              ></iframe>
+            </MapWrapper>
+          </>
+        )}
         <StyledPlaceTransportTitle>Lugar de la boda</StyledPlaceTransportTitle>
         <StyledPlaceTransportDetailBox>
-          <div>
+          <div style={{ width: '100%' }}>
             <Image
               src="/assets/photos/palacio-silvela.jpeg"
               alt="palacio-silvela"
@@ -88,7 +95,7 @@ export const TravelPage = () => {
           <div>
             <Image
               src="/assets/photos/hotel-nh.png"
-              alt="palacio-silvela"
+              alt="hotel-nh"
               width={849}
               height={566}
               layout="responsive"
@@ -129,7 +136,7 @@ export const TravelPage = () => {
             </StyledALink>
           </StyledDetailWrapper>
         </StyledPlaceTransportDetailBox>
-        <StyledPlaceTransportDetailBox reverse>
+        <StyledPlaceTransportDetailBox reverse={'isReverse'}>
           <StyledDetailWrapper>
             <Image
               src="/assets/images/hotel.png"
@@ -224,7 +231,7 @@ export const TravelPage = () => {
             </StyledALink>
           </StyledDetailWrapper>
         </StyledPlaceTransportDetailBox>
-        <StyledPlaceTransportDetailBox reverse>
+        <StyledPlaceTransportDetailBox reverse={'isReverse'}>
           <StyledDetailWrapper>
             <Image
               src="/assets/images/catapult.png"

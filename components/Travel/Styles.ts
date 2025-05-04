@@ -34,7 +34,7 @@ export const StyledPlaceTransportDetailBoxWrapper = styled.div`
   }
 `;
 
-export const StyledPlaceTransportDetailBox = styled.div<{ reverse?: boolean }>`
+export const StyledPlaceTransportDetailBox = styled.div<{ reverse?: string }>`
   display: flex;
   align-items: center;
   width: 80%;
@@ -46,7 +46,8 @@ export const StyledPlaceTransportDetailBox = styled.div<{ reverse?: boolean }>`
 
   @media (max-width: 980px) {
     min-height: 100%;
-    flex-direction: ${({ reverse }) => (reverse ? 'column-reverse' : 'column')};
+    flex-direction: ${({ reverse }) =>
+      reverse === 'isReverse' ? 'column-reverse' : 'column'};
   }
 `;
 
@@ -58,7 +59,7 @@ export const StyledPlaceTransportDetailTitle = styled.h2`
   text-decoration-skip-ink: none;
 `;
 
-export const StyledPlaceTransportDetailText = styled.p`
+export const StyledPlaceTransportDetailText = styled.div`
   font-family: 'Montserrat', sans-serif;
   font-size: 18px;
   font-weight: 400;
