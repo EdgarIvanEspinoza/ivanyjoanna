@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { StyledLi, StyledLiRSVP, StyledUlMenu } from './Styles';
+import { StyledLi, StyledLiRSVP, StyledUlMenu, StyledLiWedding } from './Styles';
 
 export const MenuComponent = () => {
   return (
@@ -15,6 +15,9 @@ export const MenuComponent = () => {
           <StyledLiRSVP className="rsvp-hover-animation">
             <Link href="/#rsvp">RSVP</Link>
           </StyledLiRSVP>
+          <StyledLiWedding>
+            <Link href="/wedding-details">Detalles de la Boda</Link>
+          </StyledLiWedding>
         </StyledUlMenu>
       </nav>
     </>

@@ -1,4 +1,35 @@
-import styled from 'styled-components';
+export const StyledLiWedding = styled.li`
+  background: linear-gradient(90deg, #f7e9b0 0%, #fffbe6 50%, #f7e9b0 100%);
+  padding: 0.8rem;
+  gap: 1rem;
+  color: #7c5e1a;
+  font-weight: bold;
+  position: relative;
+  box-shadow: 0 0 8px 2px #ffe06699;
+  animation: wedding-glow 2.5s infinite alternate;
+  border-radius: 8px;
+
+  a {
+    color: #7c5e1a;
+    text-shadow: 0 0 8px #ffe066, 0 0 2px #fffbe6;
+    font-family: "Montaga", serif;
+    letter-spacing: 1px;
+    font-size: 1.1em;
+    transition: text-shadow 0.3s;
+  }
+
+  @keyframes wedding-glow {
+    0% {
+      box-shadow: 0 0 8px 2px #ffe06699;
+      filter: brightness(1);
+    }
+    100% {
+      box-shadow: 0 0 24px 8px #ffe066cc;
+      filter: brightness(1.15);
+    }
+  }
+`;
+import styled from "styled-components";
 
 export const StyledUlMenu = styled.ul`
   display: flex;
