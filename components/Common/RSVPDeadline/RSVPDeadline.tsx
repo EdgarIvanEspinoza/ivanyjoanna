@@ -56,13 +56,21 @@ function calcTimeLeft(): TimeLeft | null {
   };
 }
 
-export const RSVPDeadline = () => {
+export const RSVPDeadline = ({ onExpire }: { onExpire?: () => void }) => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(calcTimeLeft());
+  const [fired, setFired] = useState(false);
 
   useEffect(() => {
     const id = setInterval(() => setTimeLeft(calcTimeLeft()), 1000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (!timeLeft && !fired) {
+      setFired(true);
+      onExpire?.();
+    }
+  }, [timeLeft, fired, onExpire]);
 
   const expired = !timeLeft;
 

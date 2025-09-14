@@ -8,16 +8,20 @@ import { FooterComponent } from '@/components/Common/Footer/FooterComponent';
 import { FellowshipSeparatorComponent } from '@/components/Common/FellowshipSeparator/FellowshipSeparatorComponent';
 import { GuestSignup } from '@/components/GuestSingup/GuestSingup';
 import { RSVPDeadline } from '@/components/Common/RSVPDeadline/RSVPDeadline';
+import { useState, useCallback } from 'react';
 
 export default function Home() {
+  const [rsvpOpen, setRsvpOpen] = useState(true);
+  const handleExpire = useCallback(() => setRsvpOpen(false), []);
+
   return (
     <main>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <HeroComponent />
         <MenuComponent />
-        <RSVPDeadline />
+        <RSVPDeadline onExpire={handleExpire} />
         <OurHistoryComponent />
-        <GuestSignup />
+        {rsvpOpen && <GuestSignup />}
         <FellowshipSeparatorComponent />
         {/* <PlaceTransportComponent /> */}
         <FooterComponent />
