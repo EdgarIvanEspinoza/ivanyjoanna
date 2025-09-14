@@ -7,6 +7,7 @@ import { PlaceTransportComponent } from '@/components/PlaceTransport/PlaceTransp
 import { FooterComponent } from '@/components/Common/Footer/FooterComponent';
 import { FellowshipSeparatorComponent } from '@/components/Common/FellowshipSeparator/FellowshipSeparatorComponent';
 import { GuestSignup } from '@/components/GuestSingup/GuestSingup';
+import { RSVPDeadline } from '@/components/Common/RSVPDeadline/RSVPDeadline';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <HeroComponent />
         <MenuComponent />
+        <RSVPDeadline />
         <OurHistoryComponent />
         <GuestSignup />
         <FellowshipSeparatorComponent />

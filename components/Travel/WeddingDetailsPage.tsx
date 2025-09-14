@@ -6,6 +6,7 @@ import { MenuComponent } from '../Common/Menu/MenuComponent';
 import { FellowshipSeparatorComponent } from '../Common/FellowshipSeparator/FellowshipSeparatorComponent';
 import { DecoratorComponent } from '../Common/Decorator/DecoratorComponent';
 import { StyledPlaceTransportWrapper, StyledPlaceTransportDetailTitle } from './Styles';
+import { WeatherWidget } from './WeatherWidget';
 
 // Wrapper ahora reutiliza el contenedor base oscuro para coherencia
 const StyledWrapper = styled(StyledPlaceTransportWrapper)`
@@ -177,6 +178,7 @@ export default function WeddingDetailsPage() {
           )}
         </StyledCountdown>
       </CountdownContainer>
+  <WeatherWidget />
       <StyledRing>
         <Image src="/assets/animations/ring.gif" alt="Anillo Único" width={90} height={90} />
       </StyledRing>
@@ -195,25 +197,28 @@ export default function WeddingDetailsPage() {
         <p>
           Las mesas para la cena están asignadas; al llegar, encontrarás tu lugar en el gran salón. Si tienes alguna preferencia alimentaria, háznoslo saber.
         </p>
-        <p>
-          <b>Dress code:</b> Ven como un auténtico miembro de la Comunidad del Anillo: elegante, cómodo y con espíritu aventurero. ¡Disfraces sutiles de la Tierra Media son bienvenidos!
-        </p>
       </StyledSection>
   <StyledSection>
         <h2>¿Dudas, preguntas o mensajes de los elfos?</h2>
         <StyledContact>
-          Puedes escribirnos a <a href="mailto:ivanjoanna.boda@gmail.com">ivanjoanna.boda@gmail.com</a> o enviarnos un mensaje por WhatsApp a <a href="https://wa.me/34666666666" target="_blank" rel="noopener noreferrer">+34 666 66 66 66</a>.<br />
+          Puedes escribirnos a <a href="mailto:edgarivanespinoza@gmail.com">edgarivanespinoza@gmail.com</a> o enviarnos un mensaje por WhatsApp.<br />
           Estaremos atentos como los centinelas de Lothlórien.
         </StyledContact>
+      </StyledSection>
+      <StyledSection>
+        <h2>Preguntas Frecuentes del Consejo de Rivendell</h2>
+        <p style={{ marginTop: '0' }}><b>Regalos</b><br/>Lo más valioso es vuestra presencia en esta compañía. Si aun así deseáis obsequiar algo para el inicio de este nuevo capítulo, puede ser cualquier detalle que hable de nosotros y que nos acompañe en nuestro hogar. Si preferís contribuir a las millas de nuestra luna de miel, podréis hacerlo el mismo día de la celebración. Vuestra intención ya es un tesoro digno de los Salones de los Enanos.</p>
+        <p><b>Comida</b><br/>Si algún ingrediente es enemigo declarado de vuestro estómago (alergias o intolerancias), rogamos nos lo hagáis saber para que no aparezca en vuestros platos. Así ningún orco culinario arruinará el banquete.</p>
+        <p><b>Ceremonia</b><br/>Os convocamos a las <b>17:30</b>. La ceremonia dará comienzo a las <b>18:00</b>, cuando el sol decline y la luz dorada haga justicia a la ocasión. Llegad con tiempo para hallar vuestra mesa y saludar a la Comunidad.</p>
+        <p><b>Vestimenta</b><br/>Venid como os sintáis más guapos, con elegancia digna de Rivendell y comodidad de la Comarca. No hay colores prohibidos—solo os pedimos evitar el blanco nupcial. Aunque esperamos un clima amable, traed una capa ligera o bufanda por si la brisa cambia. Se prevén temperaturas entre <b>13º y 22º</b>.</p>
+        <p><b>Movilidad y Retorno a Vuestras Tierras</b><br/>Podréis llegar en coche, tren, taxi o incluso invocar un Uber (sí llega a Aranjuez). Tendremos un contacto de taxi disponible para quienes deseen retirarse a cualquier hora. Si la aventura se alarga, no temáis: siempre habrá un camino de regreso como el del Oeste.</p>
       </StyledSection>
   <StyledSection>
         <h2>Consejos para tu travesía</h2>
         <ul>
           <li>El parking es gratuito y amplio junto al palacio.</li>
-          <li>Habrá un pequeño kit de bienvenida para cada invitado.</li>
           <li>Si necesitas taxi, te ayudamos a gestionarlo en el evento.</li>
           <li>La música y la fiesta durarán hasta bien entrada la noche.</li>
-          <li>¡No olvides tu anillo... de alegría!</li>
         </ul>
       </StyledSection>
       <StyledLove>
