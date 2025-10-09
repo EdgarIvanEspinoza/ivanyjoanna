@@ -9,7 +9,7 @@ export const MenuComponent = () => {
     <nav style={{"width": "100%", "padding": "1rem"}}>
       <StyledUlMenu>
         <StyledLi className="hover-animation">
-            <Link href="/#nosotros">Nosotros</Link>
+            <Link href="/">Nosotros</Link>
         </StyledLi>
         <StyledLi className="hover-animation">
           <Link href="/travel">Lugar y Transporte</Link>
