@@ -9,6 +9,8 @@ export const StyledFooterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 `;
 
 export const StyledFooterImage = styled(Image)`
