@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import styled, { css } from 'styled-components';
 import { supabase } from '@/lib/supabaseClient';
 import { DecoratorComponent } from '../Common/Decorator/DecoratorComponent';
@@ -8,8 +9,14 @@ import { FellowshipSeparatorComponent } from '../Common/FellowshipSeparator/Fell
 import { FooterComponent } from '../Common/Footer/FooterComponent';
 import { useSearchParams } from 'next/navigation';
 
+// === Optimización Fase 1 (egress & storage) ===
+const MAX_MAIN_SIDE = 1700; // antes 2000
+const MAIN_QUALITY = 0.78;  // antes 0.82
+const THUMB_QUALITY = 0.68; // antes 0.72
+const MAX_FILE_BYTES = 12 * 1024 * 1024; // 12MB límite duro
+
 // Helper: convert image file to WebP with optional resize of maxSidePx
-async function convertImageToWebP(file: File, quality = 0.82, maxSidePx = 2000): Promise<Blob | null> {
+async function convertImageToWebP(file: File, quality = MAIN_QUALITY, maxSidePx = MAX_MAIN_SIDE): Promise<Blob | null> {
   if (!file.type.startsWith('image/')) return null;
   let bitmap: ImageBitmap | null = null;
   try { bitmap = await createImageBitmap(file); } catch { return null; }
@@ -34,6 +41,7 @@ async function convertImageToWebP(file: File, quality = 0.82, maxSidePx = 2000):
 interface MediaItem {
   id: string;
   path: string;
+  thumb_path?: string | null;
   type: 'image';
   size_bytes: number;
   created_at: string;
@@ -41,6 +49,7 @@ interface MediaItem {
   width?: number;
   height?: number;
   publicUrl: string;
+  thumbUrl?: string;
 }
 
 interface PendingFile {
@@ -650,6 +659,9 @@ const UploadHint = styled.div`
 
 export default function MediaGallery() {
   const [media, setMedia] = useState<MediaItem[]>([]);
+  const [page, setPage] = useState(0);
+  const pageSize = 12; // images per page (ajustado a 12 según solicitud)
+  const [totalCount, setTotalCount] = useState<number | null>(null);
   const [pending, setPending] = useState<PendingFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -692,14 +704,17 @@ export default function MediaGallery() {
 
   const bucket = 'wedding-media';
 
-  const fetchMedia = useCallback(async () => {
+  const fetchMedia = useCallback(async (opts?: { pageOverride?: number }) => {
+    const targetPage = opts?.pageOverride ?? page;
     setLoading(true);
     setError(null);
-    const { data, error } = await supabase
+    const from = targetPage * pageSize;
+    const to = from + pageSize - 1;
+    const { data, error, count } = await supabase
       .from('wedding_media')
-      .select('*')
+      .select('*', { count: 'exact' })
       .order('created_at', { ascending: false })
-      .limit(500);
+      .range(from, to);
     if (error) {
       setError('No se pudieron cargar los archivos');
       setLoading(false);
@@ -708,20 +723,24 @@ export default function MediaGallery() {
     const items: MediaItem[] = (data || []).map((row: any) => ({
       id: row.id,
       path: row.path,
+      thumb_path: row.thumb_path || null,
       type: row.type,
       size_bytes: row.size_bytes,
       created_at: row.created_at,
       publicUrl: supabase.storage.from(bucket).getPublicUrl(row.path).data.publicUrl,
+      thumbUrl: row.thumb_path ? supabase.storage.from(bucket).getPublicUrl(row.thumb_path).data.publicUrl : undefined,
       author: row.author || undefined,
       width: row.width || undefined,
       height: row.height || undefined,
     }));
     setMedia(items);
+    if (count !== null) setTotalCount(count);
     setLoading(false);
-  }, [bucket]);
+  }, [bucket, page, pageSize]);
 
   useEffect(() => {
-    fetchMedia();
+    // initial load
+    fetchMedia({ pageOverride: 0 });
   }, [fetchMedia]);
 
   function openPicker() {
@@ -736,6 +755,7 @@ export default function MediaGallery() {
     incoming.forEach(f => {
       const isImage = f.type.startsWith('image/');
       if (!isImage) { problems.push(`${f.name}: solo imágenes (JPEG, PNG, WebP, GIF)`); return; }
+      if (f.size > MAX_FILE_BYTES) { problems.push(`${f.name}: excede ${(MAX_FILE_BYTES/1024/1024).toFixed(0)}MB`); return; }
       const duplicate = pending.some(p => p.file.name === f.name && p.originalSize === f.size && p.file.type === f.type);
       if (duplicate) return;
       const preview = URL.createObjectURL(f);
@@ -781,14 +801,17 @@ export default function MediaGallery() {
       // mark converting
       setPending(prev => prev.map(p => p.id === current.id ? { ...p, status: 'converting', error: undefined } : p));
       let uploadFile = current.file;
+      let thumbBlob: Blob | null = null;
       let finalExt = current.file.name.split('.').pop() || 'jpg';
       try {
         if (!/\.gif$/i.test(current.file.name)) {
-          const webpBlob = await convertImageToWebP(current.file, 0.82, 2000);
+          const webpBlob = await convertImageToWebP(current.file, MAIN_QUALITY, MAX_MAIN_SIDE);
             if (webpBlob) {
               uploadFile = new File([webpBlob], current.file.name.replace(/\.[^.]+$/, '') + '.webp', { type: 'image/webp' });
               finalExt = 'webp';
             }
+          // generate thumbnail (smaller resize) for grid, independent conversion to keep quality control
+          thumbBlob = await convertImageToWebP(current.file, THUMB_QUALITY, 400).catch(()=>null) as Blob | null;
         }
       } catch (errConv) {
         // eslint-disable-next-line no-console
@@ -797,19 +820,37 @@ export default function MediaGallery() {
       totalOriginal += current.originalSize;
       totalProcessed += uploadFile.size;
       setPending(prev => prev.map(p => p.id === current.id ? { ...p, processedSize: uploadFile.size, status: 'uploading' } : p));
-      const objectPath = `${Date.now()}-${crypto.randomUUID()}.${finalExt}`;
-      const { error: upErr } = await supabase.storage.from(bucket).upload(objectPath, uploadFile, { cacheControl: '3600', upsert: false });
+      const baseName = `${Date.now()}-${crypto.randomUUID()}`;
+      const objectPath = `${baseName}.${finalExt}`;
+      let thumbPath: string | null = null;
+      // upload main
+      const { error: upErr } = await supabase.storage.from(bucket).upload(objectPath, uploadFile, { cacheControl: '604800', upsert: false });
       if (upErr) {
         setPending(prev => prev.map(p => p.id === current.id ? { ...p, status: 'error', error: 'Falló subida' } : p));
       } else {
-        await supabase.from('wedding_media').insert({ path: objectPath, type: 'image', size_bytes: uploadFile.size });
+        // upload thumbnail if available
+        if (thumbBlob) {
+          const thumbExt = 'webp';
+          thumbPath = `${baseName}-thumb.${thumbExt}`;
+          const { error: upThumbErr } = await supabase.storage.from(bucket).upload(thumbPath, thumbBlob, { cacheControl: '604800', upsert: false });
+          if (upThumbErr) {
+            // eslint-disable-next-line no-console
+            console.warn('Thumb subida falló', upThumbErr);
+            thumbPath = null;
+          }
+        } else {
+          // fallback: if GIF or conversion failed, reuse original path as thumbnail to avoid null
+          thumbPath = objectPath;
+        }
+        await supabase.from('wedding_media').insert({ path: objectPath, thumb_path: thumbPath, type: 'image', size_bytes: uploadFile.size });
         setPending(prev => prev.map(p => p.id === current.id ? { ...p, status: 'done' } : p));
       }
       await runNext();
     };
     const workers = Array.from({ length: Math.min(concurrency, targets.length) }, () => runNext());
     await Promise.all(workers);
-    await fetchMedia();
+  setPage(0);
+  await fetchMedia({ pageOverride: 0 });
     setUploading(false);
     if (totalOriginal && totalProcessed) {
       const saved = totalOriginal - totalProcessed;
@@ -873,7 +914,8 @@ export default function MediaGallery() {
             </UploadIntroHeader>
             <UploadIntroList>
               <li>Convertimos y comprimimos (WebP) automáticamente.</li>
-              <li>Rescalado máx. 2000px para ahorrar espacio.</li>
+              <li>Rescalado máx. {MAX_MAIN_SIDE}px para ahorrar espacio.</li>
+              <li>Archivos {'>'} {(MAX_FILE_BYTES/1024/1024).toFixed(0)}MB se rechazan.</li>
               <li>GIF se mantiene sin cambios.</li>
             </UploadIntroList>
             <UploadHint>Consejo: puedes seleccionar muchas a la vez y seguir añadiendo antes de subir.</UploadHint>
@@ -931,17 +973,39 @@ export default function MediaGallery() {
           <p style={{ textAlign: 'center' }}>Aún no hay archivos.</p>
         ) : (
           <Grid>
-            {media.map(item => (
+            {media.map(item => {
+              const gridSrc = item.thumbUrl || item.publicUrl;
+              return (
               <MediaCard key={item.id} onClick={() => setLightboxIndex(media.findIndex(m => m.id === item.id))} style={{ cursor: 'pointer' }}>
-                <Img src={item.publicUrl} alt={item.path} loading="lazy" />
+                <div style={{position:'relative', width:'100%', aspectRatio:'1/1'}}>
+                  <Image
+                    src={gridSrc}
+                    alt={item.path}
+                    fill
+                    sizes="(max-width: 600px) 46vw, 250px"
+                    style={{objectFit:'cover'}}
+                    loading="lazy"
+                  />
+                </div>
                 {(isAdmin || secretAdmin) && (
                   <RemoveBtn aria-label="Eliminar" title="Eliminar" onClick={(e) => { e.stopPropagation(); deleteItem(item); }}>×</RemoveBtn>
                 )}
               </MediaCard>
-            ))}
+            );})}
           </Grid>
         )}
         </div>
+        {totalCount !== null && (
+          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:'0.6rem', marginTop:'2rem'}}>
+            <div style={{fontSize:'1.25rem'}}>
+              Página {page + 1} de {Math.max(1, Math.ceil(totalCount / pageSize))} · {totalCount} fotos
+            </div>
+            <div style={{display:'flex', gap:'1rem'}}>
+              <Button disabled={loading || page === 0} onClick={() => { const prev = Math.max(0, page - 1); setPage(prev); fetchMedia({ pageOverride: prev }); }}>Anterior</Button>
+              <Button disabled={loading || ((page + 1) * pageSize) >= totalCount} onClick={() => { const next = page + 1; setPage(next); fetchMedia({ pageOverride: next }); }}>Siguiente</Button>
+            </div>
+          </div>
+        )}
         <div ref={unlockToastRef} style={{
           position:'fixed',
           bottom:'24px',
