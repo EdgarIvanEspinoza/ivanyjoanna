@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { StyledLi, StyledUlMenu, StyledLiWedding, StyledLiPlain } from './Styles';
+import { StyledLi, StyledUlMenu, StyledLiWedding, StyledLiPlain, StyledLiMuted } from './Styles';
 
 
 export const MenuComponent = () => {
@@ -14,12 +14,12 @@ export const MenuComponent = () => {
         <StyledLi className="hover-animation">
           <Link href="/travel">Lugar y Transporte</Link>
         </StyledLi>
-        <StyledLiWedding>
+        <StyledLiMuted>
           <Link href="/wedding-details">Detalles de la Boda</Link>
-        </StyledLiWedding>
-        <StyledLiPlain>
+        </StyledLiMuted>
+        <StyledLiWedding>
           <Link href="/media">Galería de fotos</Link>
-        </StyledLiPlain>
+        </StyledLiWedding>
       </StyledUlMenu>
     </nav>
   );

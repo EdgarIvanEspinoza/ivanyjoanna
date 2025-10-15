@@ -6,6 +6,15 @@ const nextConfig = {
       displayName: true,
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        pathname: '/storage/v1/object/public/wedding-media/**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

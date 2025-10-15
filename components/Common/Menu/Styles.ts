@@ -71,6 +71,17 @@ export const StyledLiPlain = styled.li`
   &:hover a { text-decoration: underline; }
 `;
 
+// Versión atenuada para enlaces históricos (post-evento)
+export const StyledLiMuted = styled.li`
+  padding: 0.4rem 0.8rem;
+  color: #b7b09a;
+  font-style: italic;
+  opacity: 0.75;
+  a { display: block; width: 100%; height: 100%; color: inherit; text-decoration: none; }
+  position: relative;
+  &:hover { opacity: 0.9; }
+`;
+
 export const StyledLiRSVP = styled.li`
   background-color: #e5dcbf;
   padding: 0.8rem 1.2rem;
