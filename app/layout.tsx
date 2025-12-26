@@ -14,8 +14,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "assets/photos/best.jpg",
-        height: 1200,
-        width: 630,
+        height: 2535,
+        width: 4457,
         alt: "Ivan y Joanna",
       },
     ],
