@@ -581,6 +581,21 @@ export default function S3Gallery() {
         <p style={{ color: "#ffb4b4", textAlign: "center" }}>{error}</p>
       ) : (
         <>
+          <Pagination>
+            <Button onClick={handlePrev} disabled={currentPage <= 1}>
+              Anterior
+            </Button>
+            <PageIndicator>
+              Página {currentPage}
+              {totalPages && ` de ${totalPages}`}
+            </PageIndicator>
+            <Button
+              onClick={handleNext}
+              disabled={totalPages ? currentPage >= totalPages : false}
+            >
+              Siguiente
+            </Button>
+          </Pagination>
           <Grid>
             {loading ? (
               // Mostrar 60 skeletons mientras carga
