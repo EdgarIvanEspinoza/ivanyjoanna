@@ -1,17 +1,31 @@
-import type { Metadata } from 'next';
-import { Montaga } from 'next/font/google';
-import './globals.css';
-import { ScreenSizeProvider } from '@/Contexts/ScreenContext';
+import type { Metadata } from "next";
+import { Montaga } from "next/font/google";
+import "./globals.css";
+import { ScreenSizeProvider } from "@/Contexts/ScreenContext";
 
-const montaga = Montaga({ weight: '400', subsets: ['latin'] });
+const montaga = Montaga({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Joanna & Ivan',
-  description: 'Wedding of Joanna and Ivan',
+  title: "Joanna & Ivan",
+  description: "Wedding of Joanna and Ivan",
+  openGraph: {
+    title: "Ivan & Joanna - Boda 10 de Octubre 2025",
+    description: "Revive el momento mágico",
+    images: [
+      {
+        url: "assets/images/hero-image.webp",
+        width: 1200,
+        height: 630,
+        alt: "Ivan y Joanna",
+      },
+    ],
+    locale: "es_ES",
+    type: "website",
+  },
 };
 
 export const viewport = {
-  themeColor: '#515d38',
+  themeColor: "#515d38",
 };
 
 export default function RootLayout({
