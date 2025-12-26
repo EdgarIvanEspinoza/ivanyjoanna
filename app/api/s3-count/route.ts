@@ -24,7 +24,7 @@ export async function GET() {
 
     // Iterar sobre todos los objetos para contar solo los originales (no thumbnails)
     do {
-      const command = new ListObjectsV2Command({
+      const command: ListObjectsV2Command = new ListObjectsV2Command({
         Bucket: bucketName,
         ContinuationToken: continuationToken,
       });

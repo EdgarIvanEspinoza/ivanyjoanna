@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     let continuationToken: string | undefined = undefined;
 
     do {
-      const command = new ListObjectsV2Command({
+      const command: ListObjectsV2Command = new ListObjectsV2Command({
         Bucket: S3_BUCKET,
         ContinuationToken: continuationToken,
       });
