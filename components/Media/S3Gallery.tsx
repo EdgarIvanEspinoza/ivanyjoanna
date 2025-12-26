@@ -697,7 +697,7 @@ export default function S3Gallery() {
                   }}
                 >
                   <BtnIcon>⬇</BtnIcon>
-                  <BtnLabel>Descargar</BtnLabel>
+                  <BtnLabel>Descargar Full Resolución</BtnLabel>
                 </ActionBtn>
               </ActionBar>
             </Overlay>
