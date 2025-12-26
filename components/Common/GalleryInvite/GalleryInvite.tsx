@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Container = styled.div`
   position: relative;
   width: 100%;
-  min-height: 400px;
+  min-height: 450px;
   overflow: hidden;
   display: flex;
   align-items: center;

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     description: "Revive el momento mágico",
     images: [
       {
-        url: "assets/images/hero-image.jpg",
+        url: "assets/photos/best.jpg",
         width: 1200,
         height: 630,
         alt: "Ivan y Joanna",
