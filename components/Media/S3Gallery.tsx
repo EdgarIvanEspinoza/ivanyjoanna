@@ -504,6 +504,7 @@ export default function S3Gallery() {
     if (totalPages && newPage > totalPages) return;
     setCurrentPage(newPage);
     router.push(`/media?page=${newPage}`, { scroll: false });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage, totalPages, router]);
 
   const handlePrev = useCallback(() => {
@@ -511,6 +512,7 @@ export default function S3Gallery() {
     const newPage = currentPage - 1;
     setCurrentPage(newPage);
     router.push(`/media?page=${newPage}`, { scroll: false });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [currentPage, router]);
 
   // Lightbox navigation mejorada
@@ -560,44 +562,17 @@ export default function S3Gallery() {
     }
   }, [lightboxIndex, goTo]);
 
-  // Compartir en Instagram usando Web Share API (funciona en móviles)
-  const shareToInstagram = async (imageUrl: string, fileName: string) => {
-    try {
-      // Verificar si Web Share API está disponible
-      if (!navigator.share) {
-        alert(
-          "Tu navegador no soporta compartir. Por favor descarga la imagen manualmente."
-        );
-        return;
-      }
-
-      // Descargar la imagen como blob
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const file = new File([blob], fileName, { type: blob.type });
-
-      // Verificar si se pueden compartir archivos
-      if (navigator.canShare && !navigator.canShare({ files: [file] })) {
-        alert(
-          "Tu dispositivo no puede compartir archivos. Por favor descarga la imagen manualmente."
-        );
-        return;
-      }
-
-      // Compartir usando la API nativa
-      await navigator.share({
-        files: [file],
-        title: "Foto de nuestra boda",
-        text: "¡Mira esta foto de nuestra boda! 💒",
-      });
-    } catch (error: any) {
-      if (error.name !== "AbortError") {
-        console.error("Error al compartir:", error);
-        alert(
-          "No se pudo compartir. Por favor descarga la imagen manualmente."
-        );
-      }
-    }
+  // Descargar imagen a través del endpoint proxy
+  const downloadImage = (imageUrl: string, fileName: string) => {
+    const downloadUrl = `/api/download-image?url=${encodeURIComponent(
+      imageUrl
+    )}&fileName=${encodeURIComponent(fileName)}`;
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -700,38 +675,15 @@ export default function S3Gallery() {
               </OverlayInner>
               <ActionBar>
                 <ActionBtn
-                  as="a"
-                  href={files[lightboxIndex].url}
-                  download
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={() =>
+                    downloadImage(
+                      files[lightboxIndex].url,
+                      files[lightboxIndex].key
+                    )
+                  }
                 >
                   <BtnIcon>⬇</BtnIcon>
                   <BtnLabel>Descargar</BtnLabel>
-                </ActionBtn>
-                {isMobile && (
-                  <ActionBtn
-                    onClick={() =>
-                      shareToInstagram(
-                        files[lightboxIndex].url,
-                        files[lightboxIndex].key
-                      )
-                    }
-                  >
-                    <BtnIcon>📸</BtnIcon>
-                    <BtnLabel>Instagram</BtnLabel>
-                  </ActionBtn>
-                )}
-                <ActionBtn
-                  as="a"
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                    files[lightboxIndex].url
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <BtnIcon>📘</BtnIcon>
-                  <BtnLabel>Facebook</BtnLabel>
                 </ActionBtn>
               </ActionBar>
             </Overlay>
