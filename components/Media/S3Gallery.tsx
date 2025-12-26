@@ -675,12 +675,13 @@ export default function S3Gallery() {
               </OverlayInner>
               <ActionBar>
                 <ActionBtn
-                  onClick={() =>
+                  onClick={(e) => {
+                    e.stopPropagation();
                     downloadImage(
                       files[lightboxIndex].url,
                       files[lightboxIndex].key
-                    )
-                  }
+                    );
+                  }}
                 >
                   <BtnIcon>⬇</BtnIcon>
                   <BtnLabel>Descargar</BtnLabel>
