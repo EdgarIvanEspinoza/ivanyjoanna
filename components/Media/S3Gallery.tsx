@@ -173,8 +173,6 @@ const CarouselThumb = styled.img`
   max-width: calc(100vw - 80px);
   max-height: calc(100vh - 160px);
   object-fit: contain;
-  filter: blur(8px);
-  opacity: 0.7;
 `;
 const CloseBtn = styled.button`
   position: absolute;
