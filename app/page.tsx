@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { HeroComponent } from '@/components/Hero/HeroComponent';
-import { MenuComponent } from '@/components/Common/Menu/MenuComponent';
-import { OurHistoryComponent } from '@/components/OurHistory/OurHistoryComponent';
-import { PlaceTransportComponent } from '@/components/PlaceTransport/PlaceTransportComponent';
-import { FooterComponent } from '@/components/Common/Footer/FooterComponent';
-import { FellowshipSeparatorComponent } from '@/components/Common/FellowshipSeparator/FellowshipSeparatorComponent';
-import { GuestSignup } from '@/components/GuestSingup/GuestSingup';
-import { RSVPDeadline } from '@/components/Common/RSVPDeadline/RSVPDeadline';
-import { useState, useCallback } from 'react';
+import { HeroComponent } from "@/components/Hero/HeroComponent";
+import { MenuComponent } from "@/components/Common/Menu/MenuComponent";
+import { OurHistoryComponent } from "@/components/OurHistory/OurHistoryComponent";
+import { PlaceTransportComponent } from "@/components/PlaceTransport/PlaceTransportComponent";
+import { FooterComponent } from "@/components/Common/Footer/FooterComponent";
+import { FellowshipSeparatorComponent } from "@/components/Common/FellowshipSeparator/FellowshipSeparatorComponent";
+import { GuestSignup } from "@/components/GuestSingup/GuestSingup";
+import { GalleryInvite } from "@/components/Common/GalleryInvite/GalleryInvite";
+import { useState, useCallback } from "react";
 
 export default function Home() {
   const [rsvpOpen, setRsvpOpen] = useState(true);
@@ -16,10 +16,10 @@ export default function Home() {
 
   return (
     <main>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: "flex", flexDirection: "column" }}>
         <HeroComponent />
         <MenuComponent />
-        <RSVPDeadline onExpire={handleExpire} />
+        <GalleryInvite />
         <OurHistoryComponent />
         {rsvpOpen && <GuestSignup />}
         <FellowshipSeparatorComponent />
