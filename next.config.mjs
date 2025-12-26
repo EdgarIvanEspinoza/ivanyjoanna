@@ -23,6 +23,11 @@ const nextConfig = {
         hostname: 'lh3.googleusercontent.com',
         pathname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: 'ivan-joanna-wedding-photos.s3.amazonaws.com',
+        pathname: '**',
+      },
     ],
   },
 };
