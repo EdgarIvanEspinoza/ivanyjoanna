@@ -1,64 +1,87 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
-
-const S3_BUCKET = process.env.S3_BUCKET || 'ivan-joanna-wedding-photos';
-const S3_REGION = process.env.S3_REGION || 'us-east-1';
-const S3_ACCESS_KEY_ID = process.env.S3_ACCESS_KEY_ID;
-const S3_SECRET_ACCESS_KEY = process.env.S3_SECRET_ACCESS_KEY;
-
-const s3 = new S3Client({
-  region: S3_REGION,
-  credentials: S3_ACCESS_KEY_ID && S3_SECRET_ACCESS_KEY ? {
-    accessKeyId: S3_ACCESS_KEY_ID,
-    secretAccessKey: S3_SECRET_ACCESS_KEY,
-  } : undefined,
-});
+import {
+  getS3BucketName,
+  isS3CredentialError,
+  listObjectsPage,
+  S3_UNAVAILABLE_MESSAGE,
+} from '@/lib/server/s3';
 
 export async function GET(req: NextRequest) {
+  const bucketName = getS3BucketName();
   const { searchParams } = new URL(req.url);
-  const page = parseInt(searchParams.get('page') || '1', 10);
-  const pageSize = parseInt(searchParams.get('pageSize') || '60', 10);
+  const after = searchParams.get('after') || undefined;
+  const pageSize = Math.min(
+    Math.max(parseInt(searchParams.get('pageSize') || '60', 10) || 60, 1),
+    120
+  );
+
+  if (!bucketName) {
+    return NextResponse.json({ error: 'S3_BUCKET no configurado' }, { status: 500 });
+  }
 
   try {
-    // Obtener TODOS los objetos de una vez (más eficiente que múltiples llamadas)
-    let allObjects: any[] = [];
-    let continuationToken: string | undefined = undefined;
-
-    do {
-      const command: ListObjectsV2Command = new ListObjectsV2Command({
-        Bucket: S3_BUCKET,
-        ContinuationToken: continuationToken,
-      });
-
-      const response = await s3.send(command);
-      allObjects = allObjects.concat(response.Contents || []);
-      continuationToken = response.NextContinuationToken;
-    } while (continuationToken);
-
-    // Separar originales de thumbnails
-    const originals = allObjects.filter(
-      obj => obj.Key && !obj.Key.endsWith('-thumb.jpg') && !obj.Key.endsWith('/')
-    );
-
+    const pageOriginals = [];
     const thumbsMap = new Map();
-    allObjects.forEach(obj => {
-      if (obj.Key && obj.Key.endsWith('-thumb.jpg')) {
-        const originalKey = obj.Key.replace(/-thumb\.jpg$/, '.jpg');
-        thumbsMap.set(originalKey, obj);
-      }
-    });
+    let nextCursor: string | null = null;
+    let hasMore = false;
+    let startAfter = after;
 
-    // Calcular el rango de la página
-    const startIdx = (page - 1) * pageSize;
-    const endIdx = startIdx + pageSize;
-    const pageOriginals = originals.slice(startIdx, endIdx);
+    while (pageOriginals.length < pageSize) {
+      const response = await listObjectsPage({
+        startAfter,
+        maxKeys: Math.min(pageSize * 4, 1000),
+      });
+      const objects = response.Contents || [];
+
+      if (objects.length === 0) {
+        break;
+      }
+
+      let processedIndex = -1;
+
+      for (const obj of objects) {
+        processedIndex += 1;
+
+        if (!obj.Key || obj.Key.endsWith('/')) {
+          continue;
+        }
+
+        nextCursor = obj.Key;
+
+        if (obj.Key.endsWith('-thumb.jpg')) {
+          const originalKey = obj.Key.replace(/-thumb\.jpg$/, '.jpg');
+          thumbsMap.set(originalKey, obj);
+          continue;
+        }
+
+        pageOriginals.push(obj);
+
+        if (pageOriginals.length === pageSize) {
+          hasMore = processedIndex < objects.length - 1 || Boolean(response.IsTruncated);
+          break;
+        }
+      }
+
+      if (pageOriginals.length === pageSize) {
+        break;
+      }
+
+      if (!response.IsTruncated) {
+        nextCursor = null;
+        hasMore = false;
+        break;
+      }
+
+      startAfter = nextCursor || startAfter;
+      hasMore = true;
+    }
 
     // Combinar originales con sus thumbnails
     const files = [];
     for (const original of pageOriginals) {
       files.push({
         key: original.Key,
-        url: `https://${S3_BUCKET}.s3.amazonaws.com/${original.Key}`,
+        url: `https://${bucketName}.s3.amazonaws.com/${original.Key}`,
         lastModified: original.LastModified,
         size: original.Size,
       });
@@ -68,7 +91,7 @@ export async function GET(req: NextRequest) {
       if (thumb) {
         files.push({
           key: thumb.Key,
-          url: `https://${S3_BUCKET}.s3.amazonaws.com/${thumb.Key}`,
+          url: `https://${bucketName}.s3.amazonaws.com/${thumb.Key}`,
           lastModified: thumb.LastModified,
           size: thumb.Size,
         });
@@ -77,10 +100,26 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       files,
-      page,
       pageSize,
+      nextCursor,
+      hasMore,
     });
   } catch (error: any) {
+    if (isS3CredentialError(error)) {
+      console.warn('S3 professional gallery unavailable due to invalid credentials.');
+      return NextResponse.json(
+        {
+          unavailable: true,
+          files: [],
+          pageSize,
+          nextCursor: null,
+          hasMore: false,
+          error: S3_UNAVAILABLE_MESSAGE,
+        },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json({ error: 'Failed to list S3 objects', details: error?.message }, { status: 500 });
   }
 }

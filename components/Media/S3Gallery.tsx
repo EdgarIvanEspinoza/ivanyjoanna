@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState, useRef, useCallback } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
 import styled from "styled-components";
 
 const Grid = styled.div`
@@ -413,20 +412,25 @@ interface S3File {
   size?: number;
 }
 
-export default function S3Gallery() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+interface S3GalleryResponse {
+  files?: S3File[];
+  nextCursor?: string | null;
+  hasMore?: boolean;
+  unavailable?: boolean;
+  error?: string;
+}
 
+export default function S3Gallery() {
   const [files, setFiles] = useState<S3File[]>([]);
   const [thumbs, setThumbs] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [highResLoaded, setHighResLoaded] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalCount, setTotalCount] = useState<number | null>(null);
-  const [totalPages, setTotalPages] = useState<number | null>(null);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [hasMore, setHasMore] = useState(false);
   const pageSize = 60;
 
   // Detectar si es móvil
@@ -441,40 +445,34 @@ export default function S3Gallery() {
     checkMobile();
   }, []);
 
-  // Obtener el total de imágenes al cargar la página
-  useEffect(() => {
-    const fetchTotalCount = async () => {
-      try {
-        const res = await fetch("/api/s3-count");
-        if (res.ok) {
-          const data = await res.json();
-          setTotalCount(data.totalCount);
-          setTotalPages(Math.ceil(data.totalCount / pageSize));
-        }
-      } catch (err) {
-        console.error("Error al obtener el conteo total:", err);
-      }
-    };
-    fetchTotalCount();
-  }, []);
+  const fetchFiles = useCallback(async (after?: string | null, append = false) => {
+    if (append) {
+      setIsLoadingMore(true);
+    } else {
+      setLoading(true);
+    }
 
-  // Leer la página de la URL y cargar los datos
-  useEffect(() => {
-    const pageParam = searchParams.get("page");
-    const page = pageParam ? parseInt(pageParam, 10) : 1;
-    const validPage = !isNaN(page) && page > 0 ? page : 1;
-    setCurrentPage(validPage);
-    fetchFiles(validPage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
-
-  const fetchFiles = async (page: number) => {
-    setLoading(true);
-    setError(null);
     try {
-      const res = await fetch(`/api/s3-list?page=${page}&pageSize=${pageSize}`);
+      const query = new URLSearchParams({ pageSize: String(pageSize) });
+      if (after) {
+        query.set("after", after);
+      }
+
+      const res = await fetch(`/api/s3-list?${query.toString()}`);
+      const data: S3GalleryResponse = await res.json();
+
+      if (data.unavailable) {
+        if (!append) {
+          setFiles([]);
+          setThumbs({});
+        }
+        setHasMore(false);
+        setNextCursor(null);
+        setError(data.error || "La galeria profesional esta temporalmente no disponible.");
+        return 0;
+      }
+
       if (!res.ok) throw new Error("No se pudo cargar la galería S3");
-      const data = await res.json();
       const allFiles: S3File[] = data.files || [];
 
       // Separar thumbnails y originales
@@ -485,60 +483,69 @@ export default function S3Gallery() {
           thumbsMap[originalKey] = f.url;
         }
       });
-      setThumbs(thumbsMap);
+      setThumbs((currentThumbs) =>
+        append ? { ...currentThumbs, ...thumbsMap } : thumbsMap
+      );
 
       // Filtrar solo originales para mostrar en el grid
       const originals = allFiles.filter((f) => !f.key.endsWith("-thumb.jpg"));
-      setFiles(originals);
-      setLoading(false);
+      setFiles((currentFiles) => (append ? [...currentFiles, ...originals] : originals));
+      setHasMore(Boolean(data.hasMore));
+      setNextCursor(data.nextCursor ?? null);
+      setError(null);
+      return originals.length;
     } catch (err: any) {
       setError(err.message || "Error desconocido");
-      setLoading(false);
+      setHasMore(false);
+      return 0;
+    } finally {
+      if (append) {
+        setIsLoadingMore(false);
+      } else {
+        setLoading(false);
+      }
     }
-  };
+  }, [pageSize]);
 
-  const handleNext = useCallback(() => {
-    const newPage = currentPage + 1;
-    if (totalPages && newPage > totalPages) return;
-    setCurrentPage(newPage);
-    router.push(`/media?page=${newPage}`, { scroll: false });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage, totalPages, router]);
+  useEffect(() => {
+    void fetchFiles();
+  }, [fetchFiles]);
 
-  const handlePrev = useCallback(() => {
-    if (currentPage <= 1) return;
-    const newPage = currentPage - 1;
-    setCurrentPage(newPage);
-    router.push(`/media?page=${newPage}`, { scroll: false });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [currentPage, router]);
+  const handleLoadMore = useCallback(async () => {
+    if (!nextCursor || isLoadingMore) {
+      return;
+    }
+
+    await fetchFiles(nextCursor, true);
+  }, [fetchFiles, isLoadingMore, nextCursor]);
 
   // Lightbox navigation mejorada
   const goTo = useCallback(
-    (idx: number) => {
+    async (idx: number) => {
       if (idx < 0) {
-        // Si estamos en la primera imagen y hay página anterior, ir a la anterior y abrir la última
-        if (currentPage > 1) {
-          handlePrev();
-          setTimeout(() => setLightboxIndex(pageSize - 1), 200);
-          return;
-        }
         setLightboxIndex(0);
         return;
       }
+
       if (idx >= files.length) {
-        // Si estamos en la última imagen y hay página siguiente, ir a la siguiente y abrir la primera
-        if (totalPages && currentPage < totalPages) {
-          handleNext();
-          setTimeout(() => setLightboxIndex(0), 200);
+        if (hasMore && nextCursor && !isLoadingMore) {
+          const addedItems = await fetchFiles(nextCursor, true);
+          if (addedItems > 0) {
+            setLightboxIndex(idx);
+            return;
+          }
+        }
+
+        if (files.length > 0) {
+          setLightboxIndex(files.length - 1);
           return;
         }
-        setLightboxIndex(files.length - 1);
         return;
       }
+
       setLightboxIndex(idx);
     },
-    [files.length, currentPage, totalPages, handleNext, handlePrev]
+    [fetchFiles, files.length, hasMore, isLoadingMore, nextCursor]
   );
 
   // Reset high res loaded cuando cambia la imagen
@@ -580,18 +587,11 @@ export default function S3Gallery() {
       ) : (
         <>
           <Pagination>
-            <Button onClick={handlePrev} disabled={currentPage <= 1}>
-              Anterior
-            </Button>
             <PageIndicator>
-              Página {currentPage}
-              {totalPages && ` de ${totalPages}`}
+              {loading ? "Cargando galería..." : `${files.length} fotos cargadas`}
             </PageIndicator>
-            <Button
-              onClick={handleNext}
-              disabled={totalPages ? currentPage >= totalPages : false}
-            >
-              Siguiente
+            <Button onClick={() => void handleLoadMore()} disabled={!hasMore || loading || isLoadingMore}>
+              {isLoadingMore ? "Cargando..." : hasMore ? "Cargar más" : "Todo cargado"}
             </Button>
           </Pagination>
           <Grid>
@@ -610,33 +610,34 @@ export default function S3Gallery() {
                 No hay imágenes
               </p>
             ) : (
-              files.map((file, idx) => {
-                const thumbUrl = thumbs[file.key] || file.url;
-                return (
-                  <MediaCard
-                    key={file.key}
-                    onClick={() => setLightboxIndex(idx)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <Img src={thumbUrl} alt={file.key} loading="lazy" />
-                  </MediaCard>
-                );
-              })
+              <>
+                {files.map((file, idx) => {
+                  const thumbUrl = thumbs[file.key] || file.url;
+                  return (
+                    <MediaCard
+                      key={file.key}
+                      onClick={() => setLightboxIndex(idx)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <Img src={thumbUrl} alt={file.key} loading="lazy" />
+                    </MediaCard>
+                  );
+                })}
+                {isLoadingMore &&
+                  Array.from({ length: 8 }).map((_, idx) => (
+                    <MediaCard key={`loading-more-${idx}`} style={{ cursor: "default" }}>
+                      <SkeletonBox />
+                    </MediaCard>
+                  ))}
+              </>
             )}
           </Grid>
           <Pagination>
-            <Button onClick={handlePrev} disabled={currentPage <= 1}>
-              Anterior
-            </Button>
             <PageIndicator>
-              Página {currentPage}
-              {totalPages && ` de ${totalPages}`}
+              {hasMore ? "Sigue explorando la galería" : "Ya viste todas las fotos cargadas"}
             </PageIndicator>
-            <Button
-              onClick={handleNext}
-              disabled={totalPages ? currentPage >= totalPages : false}
-            >
-              Siguiente
+            <Button onClick={() => void handleLoadMore()} disabled={!hasMore || loading || isLoadingMore}>
+              {isLoadingMore ? "Cargando..." : hasMore ? "Cargar más" : "Todo cargado"}
             </Button>
           </Pagination>
           {lightboxIndex !== null && files[lightboxIndex] && (
@@ -658,7 +659,7 @@ export default function S3Gallery() {
               <OverlayInner onClick={(e) => e.stopPropagation()}>
                 <ArrowLeft
                   aria-label="Anterior"
-                  onClick={() => goTo(lightboxIndex - 1)}
+                  onClick={() => void goTo(lightboxIndex - 1)}
                 >
                   ‹
                 </ArrowLeft>
@@ -678,7 +679,7 @@ export default function S3Gallery() {
                 </CarouselImgContainer>
                 <ArrowRight
                   aria-label="Siguiente"
-                  onClick={() => goTo(lightboxIndex + 1)}
+                  onClick={() => void goTo(lightboxIndex + 1)}
                 >
                   ›
                 </ArrowRight>

@@ -1,17 +1,14 @@
-import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
-
-const s3Client = new S3Client({
-  region: process.env.S3_REGION || "us-east-1",
-  credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
-  },
-});
+import {
+  getS3BucketName,
+  isS3CredentialError,
+  listObjectsPage,
+  S3_UNAVAILABLE_MESSAGE,
+} from "@/lib/server/s3";
 
 export async function GET() {
   try {
-    const bucketName = process.env.S3_BUCKET;
+    const bucketName = getS3BucketName();
     if (!bucketName) {
       return NextResponse.json(
         { error: "S3_BUCKET no configurado" },
@@ -24,13 +21,8 @@ export async function GET() {
 
     // Iterar sobre todos los objetos para contar solo los originales (no thumbnails)
     do {
-      const command: ListObjectsV2Command = new ListObjectsV2Command({
-        Bucket: bucketName,
-        ContinuationToken: continuationToken,
-      });
+      const response = await listObjectsPage(continuationToken);
 
-      const response = await s3Client.send(command);
-      
       // Contar solo archivos que NO son thumbnails
       const originals = (response.Contents || []).filter(
         (obj) => !obj.Key?.endsWith("-thumb.jpg")
@@ -42,6 +34,18 @@ export async function GET() {
 
     return NextResponse.json({ totalCount: count });
   } catch (error) {
+    if (isS3CredentialError(error)) {
+      console.warn("S3 professional gallery unavailable due to invalid credentials.");
+      return NextResponse.json(
+        {
+          unavailable: true,
+          totalCount: 0,
+          error: S3_UNAVAILABLE_MESSAGE,
+        },
+        { status: 503 }
+      );
+    }
+
     console.error("Error al contar objetos en S3:", error);
     return NextResponse.json(
       { error: "Error al contar objetos" },
