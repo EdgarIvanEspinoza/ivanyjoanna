@@ -146,12 +146,26 @@ const CarouselImgContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: min(92vw, 1100px);
+  min-height: min(70vh, 760px);
   border-radius: 8px;
   border: 2px solid rgba(247, 233, 176, 0.25);
   box-shadow: 0 0 0 1px rgba(247, 233, 176, 0.15),
     0 8px 32px -6px rgba(0, 0, 0, 0.8),
     inset 0 0 20px -8px rgba(247, 233, 176, 0.12);
   overflow: hidden;
+  background: radial-gradient(
+      circle at center,
+      rgba(92, 103, 61, 0.18) 0%,
+      rgba(45, 51, 33, 0.12) 38%,
+      rgba(21, 25, 16, 0.88) 100%
+    ),
+    rgba(21, 25, 16, 0.96);
+
+  @media (max-width: 820px) {
+    min-width: calc(100vw - 32px);
+    min-height: min(58vh, 540px);
+  }
 `;
 
 const CarouselImg = styled.img<{ $isLoaded?: boolean }>`
@@ -161,17 +175,66 @@ const CarouselImg = styled.img<{ $isLoaded?: boolean }>`
   max-height: calc(100vh - 160px);
   object-fit: contain;
   image-rendering: auto;
-  position: ${(props) => (props.$isLoaded ? "relative" : "absolute")};
+  position: relative;
   opacity: ${(props) => (props.$isLoaded ? 1 : 0)};
-  transition: opacity 0.3s ease;
+  transition: opacity 0.35s ease;
 `;
 
-const CarouselThumb = styled.img`
+const CarouselThumb = styled.img<{ $hidden?: boolean }>`
   width: auto;
   height: auto;
   max-width: calc(100vw - 80px);
   max-height: calc(100vh - 160px);
   object-fit: contain;
+  image-rendering: auto;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  opacity: ${(props) => (props.$hidden ? 0 : 1)};
+  filter: saturate(0.96) brightness(0.94);
+  transition: opacity 0.25s ease;
+`;
+
+const LoadingVeil = styled.div<{ $visible: boolean }>`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: linear-gradient(
+    145deg,
+    rgba(21, 25, 16, 0.34),
+    rgba(29, 34, 22, 0.22)
+  );
+  opacity: ${(props) => (props.$visible ? 1 : 0)};
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+`;
+
+const LoadingRing = styled.div`
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid rgba(247, 233, 176, 0.18);
+  border-top-color: rgba(247, 233, 176, 0.82);
+  animation: spinRing 0.9s linear infinite;
+
+  @keyframes spinRing {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const LoadingLabel = styled.div`
+  font-family: "Montaga", serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+  color: rgba(247, 233, 176, 0.92);
+  text-align: center;
+  padding: 0 1.5rem;
 `;
 const CloseBtn = styled.button`
   position: absolute;
@@ -218,9 +281,7 @@ const CloseBtn = styled.button`
   }
 `;
 const ArrowBtn = styled.button`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  position: relative;
   background: linear-gradient(
     145deg,
     rgba(45, 51, 33, 0.88),
@@ -235,8 +296,12 @@ const ArrowBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 64px;
+  min-height: 64px;
   border-radius: 50%;
-  z-index: 10020;
+  z-index: 10110;
+  pointer-events: auto;
+  touch-action: manipulation;
   box-shadow: 0 0 0 1px rgba(247, 233, 176, 0.12),
     0 4px 14px -3px rgba(0, 0, 0, 0.8),
     inset 0 1px 2px rgba(247, 233, 176, 0.15);
@@ -252,14 +317,8 @@ const ArrowBtn = styled.button`
     box-shadow: 0 0 0 1px rgba(247, 233, 176, 0.22),
       0 6px 20px -3px rgba(0, 0, 0, 0.9),
       inset 0 1px 3px rgba(247, 233, 176, 0.25);
-    transform: translateY(-50%) scale(1.08);
+    transform: scale(1.08);
   }
-`;
-const ArrowLeft = styled(ArrowBtn)`
-  left: 18px;
-`;
-const ArrowRight = styled(ArrowBtn)`
-  right: 18px;
 `;
 const Counter = styled.div`
   position: absolute;
@@ -285,7 +344,7 @@ const Counter = styled.div`
 
 const ActionBar = styled.div`
   position: absolute;
-  bottom: 60px;
+  bottom: 58px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -293,8 +352,37 @@ const ActionBar = styled.div`
   justify-content: center;
   z-index: 10030;
   @media (max-width: 600px) {
-    gap: 0.7rem;
-    bottom: 50px;
+    display: none;
+  }
+`;
+
+const MobileTopBar = styled.div`
+  display: none;
+
+  @media (max-width: 600px) {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    right: 92px;
+    display: flex;
+    justify-content: flex-start;
+    z-index: 10100;
+  }
+`;
+
+const MobileNavBar = styled.div`
+  display: none;
+
+  @media (max-width: 600px) {
+    position: absolute;
+    left: 50%;
+    bottom: 44px;
+    transform: translateX(-50%);
+    width: min(calc(100vw - 28px), 420px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    z-index: 10035;
   }
 `;
 
@@ -364,6 +452,22 @@ const ActionBtn = styled.button`
   }
 `;
 
+const MobileActionBtn = styled(ActionBtn)`
+  width: 100%;
+  min-height: 48px;
+  padding: 0.8rem 1rem;
+`;
+
+const MobileDownloadBtn = styled(ActionBtn)`
+  min-height: 44px;
+  padding: 0.68rem 1rem;
+  font-size: 0.88rem;
+
+  ${BtnLabel} {
+    font-size: 0.82rem;
+  }
+`;
+
 const Pagination = styled.div`
   display: flex;
   justify-content: center;
@@ -414,6 +518,7 @@ interface S3File {
 
 interface S3GalleryResponse {
   files?: S3File[];
+  totalCount?: number;
   nextCursor?: string | null;
   hasMore?: boolean;
   unavailable?: boolean;
@@ -429,9 +534,47 @@ export default function S3Gallery() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [highResLoaded, setHighResLoaded] = useState(false);
+  const [totalCount, setTotalCount] = useState<number | null>(null);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(false);
   const pageSize = 60;
+  const loadedLightboxImages = useRef<Set<string>>(new Set());
+  const loadingLightboxImages = useRef<Map<string, Promise<void>>>(new Map());
+  const activeLightboxUrl = useRef<string | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+
+  const preloadLightboxImage = useCallback((url?: string | null) => {
+    if (!url) {
+      return Promise.resolve();
+    }
+
+    if (loadedLightboxImages.current.has(url)) {
+      return Promise.resolve();
+    }
+
+    const activeRequest = loadingLightboxImages.current.get(url);
+    if (activeRequest) {
+      return activeRequest;
+    }
+
+    const request = new Promise<void>((resolve, reject) => {
+      const img = new window.Image();
+      img.onload = () => {
+        loadedLightboxImages.current.add(url);
+        loadingLightboxImages.current.delete(url);
+        resolve();
+      };
+      img.onerror = () => {
+        loadingLightboxImages.current.delete(url);
+        reject(new Error(`Failed to preload image: ${url}`));
+      };
+      img.src = url;
+    });
+
+    loadingLightboxImages.current.set(url, request);
+    return request;
+  }, []);
 
   // Detectar si es móvil
   useEffect(() => {
@@ -511,6 +654,29 @@ export default function S3Gallery() {
     void fetchFiles();
   }, [fetchFiles]);
 
+  useEffect(() => {
+    const fetchTotalCount = async () => {
+      try {
+        const res = await fetch("/api/s3-count");
+        const data: S3GalleryResponse = await res.json();
+
+        if (data.unavailable) {
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error("No se pudo cargar el conteo total");
+        }
+
+        setTotalCount(data.totalCount ?? null);
+      } catch (err) {
+        console.error("Error al obtener el conteo total:", err);
+      }
+    };
+
+    void fetchTotalCount();
+  }, []);
+
   const handleLoadMore = useCallback(async () => {
     if (!nextCursor || isLoadingMore) {
       return;
@@ -550,8 +716,19 @@ export default function S3Gallery() {
 
   // Reset high res loaded cuando cambia la imagen
   useEffect(() => {
-    setHighResLoaded(false);
-  }, [lightboxIndex]);
+    if (lightboxIndex === null || !files[lightboxIndex]) {
+      activeLightboxUrl.current = null;
+      setHighResLoaded(false);
+      return;
+    }
+
+    const currentUrl = files[lightboxIndex].url;
+    activeLightboxUrl.current = currentUrl;
+    setHighResLoaded(loadedLightboxImages.current.has(currentUrl));
+
+    void preloadLightboxImage(files[lightboxIndex + 1]?.url);
+    void preloadLightboxImage(files[lightboxIndex - 1]?.url);
+  }, [files, lightboxIndex, preloadLightboxImage]);
 
   // Permitir navegación con flechas físicas
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -566,6 +743,52 @@ export default function S3Gallery() {
       return () => window.removeEventListener("keydown", handleKeyDown);
     }
   }, [lightboxIndex, goTo]);
+
+  const handleLightboxTouchStart = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      if (lightboxIndex === null) {
+        return;
+      }
+
+      const touch = e.touches[0];
+      touchStartX.current = touch.clientX;
+      touchStartY.current = touch.clientY;
+    },
+    [lightboxIndex]
+  );
+
+  const handleLightboxTouchEnd = useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      if (lightboxIndex === null) {
+        return;
+      }
+
+      const startX = touchStartX.current;
+      const startY = touchStartY.current;
+      touchStartX.current = null;
+      touchStartY.current = null;
+
+      if (startX === null || startY === null) {
+        return;
+      }
+
+      const touch = e.changedTouches[0];
+      const deltaX = touch.clientX - startX;
+      const deltaY = touch.clientY - startY;
+
+      if (Math.abs(deltaX) < 45 || Math.abs(deltaX) < Math.abs(deltaY) * 1.2) {
+        return;
+      }
+
+      if (deltaX < 0) {
+        void goTo(lightboxIndex + 1);
+        return;
+      }
+
+      void goTo(lightboxIndex - 1);
+    },
+    [goTo, lightboxIndex]
+  );
 
   // Descargar imagen a través del endpoint proxy
   const downloadImage = (imageUrl: string, fileName: string) => {
@@ -588,7 +811,11 @@ export default function S3Gallery() {
         <>
           <Pagination>
             <PageIndicator>
-              {loading ? "Cargando galería..." : `${files.length} fotos cargadas`}
+              {loading
+                ? "Cargando galería..."
+                : totalCount !== null
+                  ? `${files.length} de ${totalCount} fotos cargadas`
+                  : `${files.length} fotos cargadas`}
             </PageIndicator>
             <Button onClick={() => void handleLoadMore()} disabled={!hasMore || loading || isLoadingMore}>
               {isLoadingMore ? "Cargando..." : hasMore ? "Cargar más" : "Todo cargado"}
@@ -634,7 +861,13 @@ export default function S3Gallery() {
           </Grid>
           <Pagination>
             <PageIndicator>
-              {hasMore ? "Sigue explorando la galería" : "Ya viste todas las fotos cargadas"}
+              {totalCount !== null
+                ? hasMore
+                  ? `Vas en ${files.length} de ${totalCount} fotos`
+                  : `Ya viste las ${totalCount} fotos`
+                : hasMore
+                  ? "Sigue explorando la galería"
+                  : "Ya viste todas las fotos cargadas"}
             </PageIndicator>
             <Button onClick={() => void handleLoadMore()} disabled={!hasMore || loading || isLoadingMore}>
               {isLoadingMore ? "Cargando..." : hasMore ? "Cargar más" : "Todo cargado"}
@@ -656,38 +889,89 @@ export default function S3Gallery() {
               >
                 ✕
               </CloseBtn>
-              <OverlayInner onClick={(e) => e.stopPropagation()}>
-                <ArrowLeft
-                  aria-label="Anterior"
-                  onClick={() => void goTo(lightboxIndex - 1)}
+              <MobileTopBar>
+                <MobileDownloadBtn
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    downloadImage(
+                      files[lightboxIndex].url,
+                      files[lightboxIndex].key
+                    );
+                  }}
                 >
-                  ‹
-                </ArrowLeft>
-                <CarouselImgContainer>
-                  {!highResLoaded && thumbs[files[lightboxIndex].key] && (
+                  <BtnIcon>⬇</BtnIcon>
+                  <BtnLabel>Descargar</BtnLabel>
+                </MobileDownloadBtn>
+              </MobileTopBar>
+              <OverlayInner onClick={(e) => e.stopPropagation()}>
+                <CarouselImgContainer
+                  onTouchStart={handleLightboxTouchStart}
+                  onTouchEnd={handleLightboxTouchEnd}
+                >
+                  {thumbs[files[lightboxIndex].key] && (
                     <CarouselThumb
                       src={thumbs[files[lightboxIndex].key]}
-                      alt={`${files[lightboxIndex].key} thumbnail`}
+                      alt={`${files[lightboxIndex].key} vista previa`}
+                      $hidden={highResLoaded}
                     />
                   )}
+                  <LoadingVeil $visible={!highResLoaded}>
+                    <LoadingRing />
+                    <LoadingLabel>Cargando foto en alta resolución...</LoadingLabel>
+                  </LoadingVeil>
                   <CarouselImg
+                    key={files[lightboxIndex].url}
                     src={files[lightboxIndex].url}
                     alt={files[lightboxIndex].key}
                     $isLoaded={highResLoaded}
-                    onLoad={() => setHighResLoaded(true)}
+                    onLoad={() => {
+                      const currentUrl = files[lightboxIndex].url;
+                      loadedLightboxImages.current.add(currentUrl);
+
+                      if (activeLightboxUrl.current === currentUrl) {
+                        setHighResLoaded(true);
+                      }
+                    }}
                   />
                 </CarouselImgContainer>
-                <ArrowRight
-                  aria-label="Siguiente"
-                  onClick={() => void goTo(lightboxIndex + 1)}
-                >
-                  ›
-                </ArrowRight>
                 <Counter>
-                  {lightboxIndex + 1} / {files.length}
+                  {lightboxIndex + 1} / {totalCount ?? files.length}
                 </Counter>
               </OverlayInner>
+              <MobileNavBar>
+                <MobileActionBtn
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    void goTo(lightboxIndex - 1);
+                  }}
+                >
+                  <BtnIcon>←</BtnIcon>
+                  <BtnLabel>Anterior</BtnLabel>
+                </MobileActionBtn>
+                <MobileActionBtn
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    void goTo(lightboxIndex + 1);
+                  }}
+                >
+                  <BtnLabel>Siguiente</BtnLabel>
+                  <BtnIcon style={{ marginRight: 0, marginLeft: "0.5rem" }}>→</BtnIcon>
+                </MobileActionBtn>
+              </MobileNavBar>
               <ActionBar>
+                <ActionBtn
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    void goTo(lightboxIndex - 1);
+                  }}
+                >
+                  <BtnIcon>←</BtnIcon>
+                  <BtnLabel>Anterior</BtnLabel>
+                </ActionBtn>
                 <ActionBtn
                   onClick={(e) => {
                     e.stopPropagation();
@@ -699,6 +983,16 @@ export default function S3Gallery() {
                 >
                   <BtnIcon>⬇</BtnIcon>
                   <BtnLabel>Descargar Full Resolución</BtnLabel>
+                </ActionBtn>
+                <ActionBtn
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    void goTo(lightboxIndex + 1);
+                  }}
+                >
+                  <BtnLabel>Siguiente</BtnLabel>
+                  <BtnIcon style={{ marginRight: 0, marginLeft: "0.5rem" }}>→</BtnIcon>
                 </ActionBtn>
               </ActionBar>
             </Overlay>

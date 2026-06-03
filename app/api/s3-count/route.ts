@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { NextResponse } from "next/server";
 import {
   getS3BucketName,
@@ -5,6 +6,24 @@ import {
   listObjectsPage,
   S3_UNAVAILABLE_MESSAGE,
 } from "@/lib/server/s3";
+
+async function countOriginalS3Objects() {
+  let count = 0;
+  let continuationToken: string | undefined = undefined;
+
+  do {
+    const response = await listObjectsPage({ continuationToken });
+
+    const originals = (response.Contents || []).filter(
+      (obj) => obj.Key && !obj.Key.endsWith("-thumb.jpg") && !obj.Key.endsWith("/")
+    );
+    count += originals.length;
+
+    continuationToken = response.NextContinuationToken;
+  } while (continuationToken);
+
+  return count;
+}
 
 export async function GET() {
   try {
@@ -16,21 +35,13 @@ export async function GET() {
       );
     }
 
-    let count = 0;
-    let continuationToken: string | undefined = undefined;
+    const getCachedCount = unstable_cache(
+      () => countOriginalS3Objects(),
+      ["s3-total-count", bucketName],
+      { revalidate: 600 }
+    );
 
-    // Iterar sobre todos los objetos para contar solo los originales (no thumbnails)
-    do {
-      const response = await listObjectsPage(continuationToken);
-
-      // Contar solo archivos que NO son thumbnails
-      const originals = (response.Contents || []).filter(
-        (obj) => !obj.Key?.endsWith("-thumb.jpg")
-      );
-      count += originals.length;
-
-      continuationToken = response.NextContinuationToken;
-    } while (continuationToken);
+    const count = await getCachedCount();
 
     return NextResponse.json({ totalCount: count });
   } catch (error) {
