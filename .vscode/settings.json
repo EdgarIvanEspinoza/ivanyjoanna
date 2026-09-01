@@ -21,5 +21,11 @@
     "http",
     "net"
   ],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "chat.tools.terminal.autoApprove": {
+    "/^yarn why postcss && yarn why sharp && node -p \"require\\('\\./node_modules/next/package\\.json'\\)\\.version\" && node -p \"require\\('\\./node_modules/postcss/package\\.json'\\)\\.version\" && node -p \"require\\('\\./node_modules/sharp/package\\.json'\\)\\.version\"$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
 }

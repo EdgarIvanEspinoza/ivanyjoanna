@@ -189,7 +189,7 @@ export default function WeddingDetailsPage() {
         <h2>Convocatoria</h2>
         <p>
           La cita es en el <b>Palacio de la Silvela</b> a las <b>17:30h</b>.<br />
-          <i>"No llegues tarde, pues ni los magos lo hacen a una boda de la Tierra Media."</i>
+          <i>&ldquo;No llegues tarde, pues ni los magos lo hacen a una boda de la Tierra Media.&rdquo;</i>
         </p>
         <p>
           Se prevé un clima agradable, pero en la Comarca siempre es sabio llevar una bufanda o capa ligera por si acaso. El evento será mayormente en interiores, pero habrá momentos al aire libre.
@@ -227,7 +227,7 @@ export default function WeddingDetailsPage() {
       </StyledSection>
       <StyledLove>
         Los esperamos con amor y la bendición de los Valar.<br />
-        <i>"Que el sol brille sobre el camino que te lleva a Aranjuez."</i>
+        <i>&ldquo;Que el sol brille sobre el camino que te lleva a Aranjuez.&rdquo;</i>
       </StyledLove>
       <FooterComponent />
     </StyledWrapper>
