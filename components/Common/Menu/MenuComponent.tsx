@@ -1,22 +1,26 @@
 import Link from 'next/link';
-import { StyledLi, StyledLiRSVP, StyledUlMenu } from './Styles';
+import { StyledLi, StyledUlMenu, StyledLiWedding, StyledLiPlain, StyledLiMuted } from './Styles';
+
 
 export const MenuComponent = () => {
+
+
   return (
-    <>
-      <nav>
-        <StyledUlMenu>
-          <StyledLi className="hover-animation">
-            <Link href="/#nosotros">Nosotros</Link>
-          </StyledLi>
-          <StyledLi className="hover-animation">
-            <Link href="/travel">Lugar y Transporte</Link>
-          </StyledLi>
-          <StyledLiRSVP className="rsvp-hover-animation">
-            <Link href="/#rsvp">RSVP</Link>
-          </StyledLiRSVP>
-        </StyledUlMenu>
-      </nav>
-    </>
+    <nav style={{"width": "100%", "padding": "1rem"}}>
+      <StyledUlMenu>
+        <StyledLi className="hover-animation">
+            <Link href="/">Nosotros</Link>
+        </StyledLi>
+        <StyledLi className="hover-animation">
+          <Link href="/travel">Lugar y Transporte</Link>
+        </StyledLi>
+        <StyledLiMuted>
+          <Link href="/wedding-details">Detalles de la Boda</Link>
+        </StyledLiMuted>
+        <StyledLiWedding>
+          <Link href="/media">Galería de fotos</Link>
+        </StyledLiWedding>
+      </StyledUlMenu>
+    </nav>
   );
 };
