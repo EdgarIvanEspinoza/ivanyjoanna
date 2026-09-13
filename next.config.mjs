@@ -6,6 +6,30 @@ const nextConfig = {
       displayName: true,
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+        pathname: '/storage/v1/object/public/wedding-media/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'drive.google.com',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ivan-joanna-wedding-photos.s3.amazonaws.com',
+        pathname: '**',
+      },
+    ],
+  },
 };
 
 export default nextConfig;
